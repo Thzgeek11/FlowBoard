@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <link rel="stylesheet" href="/frontend/style.css" />
+  <title>FlowBoard - Paramètres</title>
+</head>
+<body>
+  <!-- on utilise un id pour cibler facilement -->
+  <div id="sidepanel"></div>
+
+  <div class="main">
+    <header class="main-header">
+      <h1>Paramètres</h1>
+      <div class="main-header-right">
+        <button aria-label="logout"><img src="/frontend/icons/logout.png" alt="Logout"></button>
+      </div>
+    </header>
+
+    <main class="main-content">
+      <p>Contenu des paramètres...</p>
+    </main>
+  </div>
+
+  <script>
+    // fetch sidepanel.html et insertion dans #sidepanel
+    fetch('/frontend/sidepanel.html')
+      .then(res => {
+        if (!res.ok) throw new Error('Erreur chargement sidepanel: ' + res.status);
+        return res.text();
+      })
+      .then(html => document.getElementById('sidepanel').innerHTML = html)
+      .catch(err => {
+        console.error(err);
+        // fallback minimal si fetch échoue
+        document.getElementById('sidepanel').innerHTML =
+          '<nav><a href="/frontend/dashboard.html">Dashboard</a></nav>';
+      });
+  </script>
+</body>
+</html>
