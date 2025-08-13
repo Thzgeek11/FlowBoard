@@ -37,7 +37,7 @@ body {
     left: 50%;
     transform: translate(-50%, -50%);
     width: 50%;
-    height: 50vh;
+    height: 50dvh;
     background-color: var(--sidebar-color);
     box-shadow: 0 0 30px rgba(0, 0, 0, 0.5);
     font-size: 1.1rem;

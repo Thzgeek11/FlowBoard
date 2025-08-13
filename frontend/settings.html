@@ -2,8 +2,9 @@
 <html lang="fr">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no" />
   <link rel="stylesheet" href="/frontend/style.css" />
+  <script src="/frontend/sidepanel.js"></script>
   <title>FlowBoard - Paramètres</title>
 </head>
 <body>
@@ -11,15 +12,15 @@
   <div id="sidepanel"></div>
 
   <div class="main">
-    <header class="main-header">
+    <header class="main-header" id="main-header">
       <h1>Paramètres</h1>
       <div class="main-header-right">
-        <button aria-label="logout"><img src="/frontend/icons/logout.png" alt="Logout"></button>
+        <button aria-label="logout" onclick="window.location.href = '/frontend/index.html'"><img src="icons/logout.png" alt="Logout"></button>
       </div>
     </header>
 
     <main class="main-content">
-      <p>Contenu des paramètres...</p>
+      <p>Ici se trouvera les paramètres.</p>
     </main>
   </div>
 

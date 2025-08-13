@@ -1,0 +1,15 @@
+{
+    "name": "FlowBoard", 
+    "short_name": "FlowBoard",
+    "start_url": "/",
+    "display": "standalone",
+    "background_color": "#222222",
+    "theme_color": "#00bcd4",
+    "icons": [
+        {
+            "src": "/icons/icon_512.png",
+            "sizes": "512x512",
+            "type": "icons/png"
+        }
+    ]
+}

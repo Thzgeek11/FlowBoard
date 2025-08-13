@@ -13,14 +13,11 @@ async function login() {
     // récupère les valeurs
     const username = document.getElementById("username").value.toLowerCase();
     const password = document.getElementById("password").value.toLowerCase();
-  
-    console.log(username, password);
-    console.log(hashString(password));
 
     const validUsername = "thzgeek";
-    const validPassword = "78e837bb99a959e829285e58086564de711a8127116acbc1da78f54b49473c45";
+    const validPassword = "7551";//"78e837bb99a959e829285e58086564de711a8127116acbc1da78f54b49473c45";
 
-    if (username === validUsername && await hashString(password) === validPassword) {
+    if (username === validUsername && password === validPassword) {
         window.location.href = "/frontend/dashboard.html";
     } else {
         alert("Nom d'utilisateur ou mot de passe incorrect");
