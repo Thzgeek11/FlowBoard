@@ -3,8 +3,9 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no "/>
-  <link rel="stylesheet" href="/frontend/style.css" />
+  <link rel="stylesheet" href="/frontend/finances.css" />
   <script src="/frontend/sidepanel.js"></script>
+  <script src="/frontend/finances.js"></script>
   <title>FlowBoard - Finances</title>
 </head>
 <body>
@@ -20,11 +21,34 @@
     </header>
 
     <main class="main-content">
-      <p>Ici se trouvera les finances.</p>
+      <div id="graph-container">
+        <p id="graph-container-subtitle">Graphique des finances</p>
+        <img id="graph-img" alt="En cours de chargement..." />
+      </div>
+      <div id="right-container">
+        <div id="right-container-top">
+            <p id="right-container-title" class="title-sticky">Historique des derniers flux</p>
+            <p>En cours de chargement...</p>
+        </div>
+        <div id="right-container-bottom">
+            <p class="title-sticky">Ajout de nouveaux flux</p>
+            <div class="input-title">Catégorie</div>
+            <input type="text" id="category" placeholder="Catégorie"><br>
+            <div class="input-title">Montant</div>
+            <input type="number" id="amount" placeholder="Montant"><br>
+            <div class="input-title">Date</div>
+            <input type="date" id="date"><br>
+            <p id="error-message">Oh, you found me !</p>
+            <button id="inflow-button" onclick="add_flow()">Ajouter</button>
+        </div>
+      </div>
     </main>
   </div>
 
   <script>
+    get_graph()
+    get_history()
+
     // fetch sidepanel.html et insertion dans #sidepanel
     fetch('/frontend/sidepanel.html')
       .then(res => {
@@ -38,6 +62,14 @@
         document.getElementById('sidepanel').innerHTML =
           '<nav><a href="/frontend/dashboard.html">Dashboard</a></nav>';
       });
+      
+      const input = document.getElementById("date");
+      const today = new Date();
+      const yyyy = today.getFullYear();
+      const mm = String(today.getMonth() + 1).padStart(2, '0'); // mois sur 2 chiffres
+      const dd = String(today.getDate()).padStart(2, '0'); // jour sur 2 chiffres
+      input.value = `${yyyy}-${mm}-${dd}`;
+
   </script>
 </body>
 </html>
