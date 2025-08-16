@@ -7,7 +7,7 @@ import datetime
 from datetime import timedelta
 import io
 
-def create_graph():
+def create_graph(list_outflow, list_inflow):
     try:
         plt.style.use('seaborn-v0_8-darkgrid')
     except:
@@ -28,9 +28,20 @@ def create_graph():
                 (now - timedelta(days=1)).strftime("%d/%m/%Y"), 
                 "Aujourd'hui"]
     ventes = np.array([
-        [10, 15, 8, 13, 0, 14, 11],   # Dépenses
-        [25, 8, 0, 13, 7, 5, 16],      # Revenus
+        [0 for _ in range(7)],
+        [0 for _ in range(7)],
     ])
+
+    try:
+        ventes = np.array([
+            [abs(list_outflow[i]) for i in range(7)],   # Dépenses
+            [abs(list_inflow[i]) for i in range(7)],      # Revenus
+        ])
+    except:
+        ventes = np.array([
+            [0 for _ in range(7)],
+            [0 for _ in range(7)],
+        ])
 
     produits = ['Dépenses', 'Revenus']
     couleurs = ['#CD0001', '#019A01']
@@ -50,7 +61,7 @@ def create_graph():
         # Cas particulier pour les valeurs nulles
         for k in range(2):
             if ventes[k, j] == 0:
-                ax.bar(x[j], 0.1, width=largeur_barre,
+                ax.bar(x[j], 0.001, width=largeur_barre,
                     color=couleur_zero, edgecolor='#AAAAAA',
                     zorder=3, linewidth=0.5)
         
@@ -84,10 +95,10 @@ def create_graph():
             
             # Dessin du trait
             ax.hlines(y=y_pos, xmin=x[j]-largeur_barre/2+0.005, xmax=x[j]+largeur_barre/2, 
-                    colors=line_color, linewidth=3, zorder=4)
+                    colors=line_color, linewidth=3, zorder=2)
             
             # Texte de la différence
-            ax.text(x[j], y_pos+0.35, f'{"-" if not_abs_diff < 0 else ""}{diff}€', ha='center', va='center', 
+            ax.text(x[j], y_pos, f'{"-" if not_abs_diff < 0 else ""}{diff}€', ha='center', va='center', 
                     color='white', fontsize=9, fontweight='bold',
                     bbox=dict(facecolor=line_color, alpha=0.8, edgecolor='none', boxstyle='round,pad=0.2'))
 
@@ -96,7 +107,7 @@ def create_graph():
     ax.set_xticklabels(trimestres, fontsize=11)
     ax.set_xlabel('Dépenses / Revenus (7 derniers jours)', fontsize=12, labelpad=10)
     ax.set_ylabel('Montant (en €)', fontsize=12, labelpad=10)
-    ax.set_ylim(0, np.max(ventes)*1.15)
+    ax.set_ylim(0, np.max(ventes) * 1.15)
 
     # Titre et légende
     ax.set_title('Dépenses vs Revenus - 7 derniers jours\n', 
@@ -113,7 +124,7 @@ def create_graph():
     for j in range(len(trimestres)):
         for k in range(2):
             if ventes[k, j] > 0:
-                ax.text(x[j], ventes[k, j] + 0.5, str(ventes[k, j]),
+                ax.text(x[j], ventes[k, j], str(ventes[k, j]),
                         ha='center', va='bottom', fontsize=10,
                         color=couleurs[k] if ventes[0,j]!=ventes[1,j] else couleur_egalite)
 

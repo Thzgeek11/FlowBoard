@@ -50,8 +50,10 @@ function get_graph() {
         .catch(err => console.error(err));
 }
 
-function get_history() {
-    fetch("http://192.168.1.49:5600/finances/get_history")
+let historyNumber = 10;
+
+function get_history(number = historyNumber) {
+    fetch("http://192.168.1.49:5600/finances/get_history/" + number)
         .then(res => res.json())
         .then(data => {
             const rightContainerTop = document.getElementById("right-container-top");
@@ -66,6 +68,14 @@ function get_history() {
                 const influxHtml = `<div class="${influxClass}">${influxCategory}   ${influxText}${influxAmount}€   ${influxDate}</div>`;
                 rightContainerTop.innerHTML += influxHtml;
             });
+            rightContainerTop.innerHTML += "<button class=\"flux-button\" style=\"margin-right: 30px;\" onclick=\"increase_flux_viewed(5)\">En voir +5</button>";
+            rightContainerTop.innerHTML += "<button class=\"flux-button\" style=\"margin-left: 30px;\" onclick=\"increase_flux_viewed(10)\">En voir +10</button>";
         })
         .catch(err => console.error(err));
+}
+
+function increase_flux_viewed(number = 5) {
+    historyNumber += number;
+    get_history(historyNumber);
+    console.log(historyNumber);
 }
