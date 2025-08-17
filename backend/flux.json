@@ -1,0 +1,27 @@
+[
+  {
+    "category": "Test",
+    "amount": 1.0,
+    "date": "17/08/2025"
+  },
+  {
+    "category": "Test2",
+    "amount": -2.0,
+    "date": "16/08/2025"
+  },
+  {
+    "category": "Phone",
+    "amount": -1.0,
+    "date": "17/08/2025"
+  },
+  {
+    "category": "Phone2",
+    "amount": 42.0,
+    "date": "13/08/2025"
+  },
+  {
+    "category": "Phone3",
+    "amount": -25.6,
+    "date": "13/08/2025"
+  }
+]
