@@ -6,7 +6,9 @@ from fastapi.responses import StreamingResponse
 from graph import create_graph
 import io
 import json
-from datetime import *
+import os
+import tempfile
+from datetime import datetime, timedelta
 
 app = fastapi.FastAPI()
 
@@ -19,36 +21,53 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+
 class Flow(pydantic.BaseModel):
     category: str
     amount: float
     date: str
 
-try:
-    with open("backend/flux.json", "r") as f:
-        data = json.load(f)
-        data = [Flow(**flow) for flow in data]
-except FileNotFoundError:
-    data = []
-    with open("backend/flux.json", "w") as f:
-        json.dump(data, f)
+
+FLUX_DATA_PATH = "backend/flux.json"
 
 
+def safe_write_json(path: str, data: list[dict]):
+    """Écrit un JSON de manière atomique (évite fichiers vides si crash)."""
+    tmp_fd, tmp_path = tempfile.mkstemp()
+    with os.fdopen(tmp_fd, "w", encoding="utf-8") as tmp_file:
+        json.dump(data, tmp_file, indent=2, ensure_ascii=False)
+    os.replace(tmp_path, path)
 
 
+def load_flux() -> list[Flow]:
+    """Charge le fichier JSON en Flow[], tolère vide/corrompu."""
+    if not os.path.exists(FLUX_DATA_PATH):
+        safe_write_json(FLUX_DATA_PATH, [])
+        return []
 
-def load_flux():
-    with open("backend/flux.json", "r") as f:
-        data = json.load(f)
-        data = [Flow(**flow) for flow in data]
-    return data
+    try:
+        with open(FLUX_DATA_PATH, "r", encoding="utf-8") as f:
+            data = json.load(f)
+            return [Flow(**flow) for flow in data]
+    except (json.JSONDecodeError, FileNotFoundError):
+        # fichier vide/corrompu → reset
+        safe_write_json(FLUX_DATA_PATH, [])
+        return []
+
+
+def save_flux(flux_data: list[Flow]):
+    """Sauvegarde la liste de Flow en JSON dict."""
+    dicts = [flow.model_dump() for flow in flux_data]
+    safe_write_json(FLUX_DATA_PATH, dicts)
+
 
 def sort_flows(flux_data: list[Flow]):
     return sorted(
         flux_data,
         key=lambda x: datetime.strptime(x.date, "%d/%m/%Y"),
-        reverse=True
+        reverse=True,
     )
+
 
 def get_last_week_flows(flux_data: list[Flow]):
     last_week_flows = []
@@ -61,6 +80,7 @@ def get_last_week_flows(flux_data: list[Flow]):
 
     return last_week_flows
 
+
 def get_inoutlist(flux_data: list[Flow]):
     inflow = []
     outflow = []
@@ -69,38 +89,43 @@ def get_inoutlist(flux_data: list[Flow]):
             inflow.append(flow)
         else:
             outflow.append(flow)
-    
+
     list_inflow = [0 for _ in range(7)]
     list_outflow = [0 for _ in range(7)]
-    
+
     for flow in inflow:
-        list_inflow[int(-(datetime.now() - datetime.strptime(flow.date, "%d/%m/%Y")).days)-1] += flow.amount
+        days_ago = (datetime.now() - datetime.strptime(flow.date, "%d/%m/%Y")).days
+        if 0 <= days_ago < 7:
+            list_inflow[6 - days_ago] += flow.amount
     for flow in outflow:
-        list_outflow[int(-(datetime.now() - datetime.strptime(flow.date, "%d/%m/%Y")).days)-1] += flow.amount
+        days_ago = (datetime.now() - datetime.strptime(flow.date, "%d/%m/%Y")).days
+        if 0 <= days_ago < 7:
+            list_outflow[6 - days_ago] += flow.amount
 
     return list_inflow, list_outflow
 
 
-
-
-
 @app.get("/finances/get_history/{number}")
 def get_history(number: int = 10):
-    return data[::-1][0:number]
+    flux = load_flux()
+    return flux[::-1][:number]
+
 
 @app.get("/finances/get_graph")
 def get_graph():
-    list_inflow, list_outflow = get_inoutlist(get_last_week_flows(sort_flows(load_flux())))
+    flux = sort_flows(load_flux())
+    list_inflow, list_outflow = get_inoutlist(get_last_week_flows(flux))
     buf = create_graph(list_outflow, list_inflow)  # renvoie un BytesIO
     return StreamingResponse(buf, media_type="image/png")
 
+
 @app.post("/finances/add_flow")
 def add_flow(flow: Flow):
-    data.append(flow.model_dump())
-    with open("backend/flux.json", "w") as f:
-        json.dump(data, f)
-    return "add_flow"
+    flux = load_flux()
+    flux.append(flow)
+    save_flux(flux)
+    return {"status": "ok"}
+
 
 if __name__ == "__main__":
-    import uvicorn
     uvicorn.run(app, host="0.0.0.0", port=5600)
