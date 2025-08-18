@@ -65,8 +65,15 @@ function get_history(number = historyNumber) {
                 const influxAmount = influx ? flow.amount : -flow.amount;
                 const influxCategory = flow.category;
                 const influxDate = flow.date;
-                const influxHtml = `<div class="${influxClass}">${influxCategory}   ${influxText}${influxAmount}€   ${influxDate}</div>`;
-                rightContainerTop.innerHTML += influxHtml;
+
+                const item = document.createElement("div");
+                item.classList.add(influxClass);
+                item.innerHTML = `
+                    <p class="flux-item-title">${influxCategory}</p>
+                    <p class="flux-item-quantity">${influxText}${influxAmount}€</p>
+                    <p class="flux-item-date">${influxDate}</p>
+                `;
+                rightContainerTop.appendChild(item);
             });
             rightContainerTop.innerHTML += "<button class=\"flux-button\" style=\"margin-right: 30px;\" onclick=\"increase_flux_viewed(5)\">En voir +5</button>";
             rightContainerTop.innerHTML += "<button class=\"flux-button\" style=\"margin-left: 30px;\" onclick=\"increase_flux_viewed(10)\">En voir +10</button>";

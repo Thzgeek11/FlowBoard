@@ -51,6 +51,10 @@ input, button {
     padding: 5px;
 }
 
+.title {
+    font-size: 1.3rem;
+}
+
 
 
 /* SIDEPANEL */
@@ -210,6 +214,7 @@ input, button {
 #graph-container-subtitle {
     text-align: left;
     text-indent: 16px;
+    font-size: 1.2rem;
 }
 
 #right-container {
@@ -227,7 +232,6 @@ input, button {
     grid-column: 1 / 2;
     grid-row: 1 / 2;
     line-height: 60px;
-    text-indent: 16px;
     overflow: scroll;
     scrollbar-color: transparent;
     position: relative;
@@ -235,11 +239,19 @@ input, button {
 }
 
 .influx {
-    color: #019A01;  
+    color: var(--green-color);
+    display: grid;
+    grid-template-columns: 0.8fr 0.8fr 1fr;
+    grid-template-rows: 1fr;
+    line-height: 50px;
 }
 
 .outflux {
-    color: #CD0001;
+    color: var(--red-color);
+    display: grid;
+    grid-template-columns: 0.8fr 0.8fr 1fr;
+    grid-template-rows: 1fr;
+    line-height: 50px;    
 }
 
 #right-container-bottom {
@@ -294,10 +306,6 @@ input, button {
 
 @media (max-width: 800px) {
     body {
-        background-color: #b400a2;
-        display: grid;
-        width: 100%;
-        height: 100dvh;
         grid-template-rows: 80px 1fr;
         grid-template-columns: 1fr;
     }
@@ -307,24 +315,7 @@ input, button {
         position: absolute;
         width: 250px;
         height: 100dvh;
-        grid-column: 1 / 2;
-        grid-row: 1 / 3;
-        background-color: var(--sidebar-color);
-        display: grid;
-        grid-template-columns: 1fr;
-        grid-template-rows: 80px 1fr;
         z-index: 10;
-    }
-    
-    #sidepanel .header {
-        grid-column: 1 / 2;
-        grid-row: 1 / 2;
-        width: 100%;
-        height: 100%;
-        background-color: var(--sidebar-header-color);
-        border-bottom: 1px solid #202020;
-        font-size: 0.8rem;
-        line-height: 80px;
     }
 
     #sidepanel-header-title {
@@ -357,145 +348,32 @@ input, button {
         align-self: center;
         justify-self: center;
     }
-    
-    #sidepanel .header:hover {
-        cursor: pointer;
-    }
-    
-    #sidepanel-list {
-        grid-column: 1 / 2;
-        grid-row: 2 / 3;
-        width: 100%;
-        height: 100%;
-        background-color: var(--sidebar-color);
-        font-size: 1.1rem;
-        line-height: 10dvh;
-        text-align: center;
-        z-index: 10;
-    }
-    
-    #sidepanel-list a {
-        text-decoration: none;
-        color: #fff;
-        display: inline-block;
-        width: 100%;
-        height: 100%;
-        z-index: 10;
-    }
-    
-     #sidepanel-list li:hover {
-        background-color: var(--sidebar-hover-color);
-    }
       
     /* MAIN */
     .main {
-        background-color: var(--main-header-color);
         grid-column: 1 / 3;
         grid-row: 1 / 3;
-        color: #000;
-        display: grid;
         grid-template-rows: 80px 1fr;
         grid-template-columns: 16px 1fr;
     }
     
     .main-header {
-        grid-column: 1 / 3;
-        grid-row: 1 / 2;
-        width: 100%;
-        height: 100%;
-        background-color: var(--main-header-color);
-        border-bottom: 1px solid #202020;
-        font-size: 0.8rem;
-        line-height: 80px;
-        text-align: left;
         text-indent: 66px;
-        display: grid;
-        grid-template-columns: 300px auto 80px;
-        grid-template-rows: 80px;
     }
-    
-    .main-header-right {
-        grid-column: 3 / 4;
-        grid-row: 1 / 2;
-        width: 100%;
-        height: 100%;
-        background-color: transparent;
-        font-size: 0.8rem;
-        line-height: 80px;
-    
-        display: flex;
-        justify-content: center;
-        align-items: center;
-    }
-    
-    .main-header-right button {
-        background-color: transparent;
-        border: none;
-        cursor: pointer;
-        width: 100%;
-        height: 100%;
-        display: inline-block;
-    }
-    
-    .main-header-right img {
-        width: 40px;
-        height: 40px;
-    }
-    
     
     .main-content {
         grid-column: 1 / 3;
         grid-row: 2 / 3;
-        width: 100%;
-        height: 100%;
-        background-color: #fff;
-        font-size: 1.1rem;
-        line-height: 60px;
-        text-align: center;
-        text-indent: 16px;
-
-        /* Spécifique à la page finances */
-        display: grid;
         grid-template-columns: auto;
-        grid-template-rows: 315px 500px 200px;
-    }
-
-    .title-sticky {
-        position: sticky;
-        top: 0;
-        z-index: 1;
-        background-color: var(--main-content-right-color);
-    }
-    
-    #graph-container {
-        line-height: 60px;
-        grid-column: 1 / 2;
-        grid-row: 1 / 2;
-        overflow: scroll;
-        background-color: var(--main-content-left-color);
-        border-right: 1px solid #e9e9e9;
-    }
-    
-    #graph-container img {
-        width: 100%;
-        height: auto;
-        position: relative;
-    }
-    
-    #graph-container-subtitle {
-        text-align: left;
+        grid-template-rows: 315px 600px 200px;
         text-indent: 16px;
     }
-    
+
     #right-container {
-        line-height: 60px;
         grid-column: 1 / 2;
         grid-row: 2 / 4;
-        background-color: var(--main-content-right-color);
-    
         display: grid;
         overflow: scroll;
-        grid-template-rows: 1fr 1fr;
         grid-template-columns: 1fr;
     }
 
@@ -504,81 +382,8 @@ input, button {
         text-indent: 0px;
         font-size: 1rem;
     }
-    
-    #right-container-top {
-        grid-column: 1 / 2;
-        grid-row: 1 / 2;
-        line-height: 60px;
-        text-indent: 16px;
-        overflow: scroll;
-        scrollbar-color: transparent;
-        position: relative;
-        border-bottom: 1px solid #e9e9e9;
-    }
-    
-    .influx {
-        color: #019A01;  
-    }
-    
-    .outflux {
-        color: #CD0001;
-    }
-    
-    #right-container-bottom {
-        grid-column: 1 / 2;
-        grid-row: 2 / 3;
-        background-color: var(--main-content-right-color);
-        border-radius: 15px;
-        overflow-x: hidden;
-        overflow-y: scroll;
-        scrollbar-color: #cccccc transparent;
-        line-height: 60px;
-    }
-    
-    #right-container-bottom #error-message {
-        color: var(--main-content-right-color);
-        line-height: 20px;
-        font-size: 0.8rem;
-    }
-    
-    #inflow-button {
-        background-color: var(--green-color);
-        color: #fff;
-        padding: 25px;
-        margin-right: 25px;
-    }
-    
-    #inflow-button:hover {
-        cursor: pointer;
-    }
-    
-    #outflow-button {
-        background-color: var(--red-color);
-        color: #fff;
-        padding: 25px;
-        margin-left: 25px;
-    }
-    
-    #outflow-button:hover {
-        cursor: pointer;
-    }
-    
-    .flux-button {
-        position: sticky;
-        bottom: 10px;
-        text-align: center;
-    }
-    
-    .input-title {
-        display: inline;
-        margin-right: 6px;
-    }
 
     input {
-        overflow: hidden;
-        border: 0px solid #202020;
-        border-radius: 5px;
-        padding: 5px;
         width: 12rem;
     }
-} 
+}

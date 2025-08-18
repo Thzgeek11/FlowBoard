@@ -3,8 +3,9 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no "/>
-  <link rel="stylesheet" href="/frontend/style.css" />
+  <link rel="stylesheet" href="/frontend/inventory.css" />
   <script src="/frontend/sidepanel.js"></script>
+  <script src="/frontend/inventory.js"></script>
   <title>FlowBoard - Inventaire</title>
 </head>
 <body>
@@ -20,7 +21,65 @@
     </header>
 
     <main class="main-content">
-      <p>Ici se trouvera l'inventaire.</p>
+      <div id="inventory-container">
+        <div class="title-bar">
+          <p class="title-sticky title">Inventaire</p>
+          <button class="title-button">+</button>
+        </div>
+      </div>
+      <div id="right-container">
+        <div class="title-sticky title-bar">
+          <p class="title">Recettes</p>
+          <button class="title-button">+</button>
+        </div>
+
+        <div class="recipe-container">
+          <div class="recipe-header">
+            <p class="recipe-item-title">Pâtes à la Carbonara</p>
+            <p class="recipe-item-quantite">1 personne</p>
+            <p class="recipe-item-temps">20min</p>
+            <button>+</button>
+          </div>
+          <div class="recipe-ingredients">
+            <div class="recipe-ingredient"><p>Pâtes (Spaghetti)</p><p>90g</p><button>+</button></div>
+            <div class="recipe-ingredient"><p>Parmesan</p><p></p><button>+</button></div>
+            <div class="recipe-ingredient"><p>Lardons</p><p>100g</p><button>+</button></div>
+            <div class="recipe-ingredient"><p>Oeufs</p><p>1</p><button>+</button></div>
+          </div>
+        </div>
+
+        <div class="recipe-container">
+          <div class="recipe-header">
+            <p class="recipe-item-title">Pâtes à la Carbonara</p>
+            <p class="recipe-item-quantite">1 personne</p>
+            <p class="recipe-item-temps">20min</p>
+            <button>+</button>
+          </div>
+          <div class="recipe-ingredients">
+            <div class="recipe-ingredient"><p>Pâtes (Spaghetti)</p><p>90g</p><button>+</button></div>
+            <div class="recipe-ingredient"><p>Parmesan</p><p></p><button>+</button></div>
+            <div class="recipe-ingredient"><p>Lardons</p><p>100g</p><button>+</button></div>
+            <div class="recipe-ingredient"><p>Oeufs</p><p>1</p><button>+</button></div>
+          </div>
+        </div>
+
+
+        <div class="recipe-container">
+          <div class="recipe-header">
+            <p class="recipe-item-title">Pâtes à la Carbonara</p>
+            <p class="recipe-item-quantite">1 personne</p>
+            <p class="recipe-item-temps">20min</p>
+            <button>+</button>
+          </div>
+          <div class="recipe-ingredients">
+            <div class="recipe-ingredient"><p>Pâtes (Spaghetti)</p><p>90g</p><button>+</button></div>
+            <div class="recipe-ingredient"><p>Parmesan</p><p></p><button>+</button></div>
+            <div class="recipe-ingredient"><p>Lardons</p><p>100g</p><button>+</button></div>
+            <div class="recipe-ingredient"><p>Oeufs</p><p>1</p><button>+</button></div>
+          </div>
+        </div>
+
+      </div>
     </main>
   </div>
 
@@ -38,6 +97,16 @@
         document.getElementById('sidepanel').innerHTML =
           '<nav><a href="/frontend/dashboard.html">Dashboard</a></nav>';
       });
+      
+    
+    add_item("J+14", "200g", "03/09/2025");  
+    add_item("J+13", "200g", "02/09/2025");  
+    add_item("J+8", "200g", "27/08/2025");  
+    add_item("J+7", "200g", "26/08/2025");
+    add_item("J+1", "200g", "20/08/2025");
+    add_item("Demain", "250g", "19/08/2025");
+    add_item("Aujourd'hui", "100g", "18/08/2025");
+    add_item("Hier", "200g", "17/08/2025");
   </script>
 </body>
 </html>
