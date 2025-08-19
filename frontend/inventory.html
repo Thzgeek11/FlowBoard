@@ -12,6 +12,33 @@
   <!-- on utilise un id pour cibler facilement -->
   <div id="sidepanel"></div>
 
+  <div class="popup-overlay" id="popup-1" style="display: none;">
+    <div class="popup">
+      <h2>Ajouter un produit</h2><br>
+
+      <div class="popup-content">
+        <div class="input-title">Nom</div>
+        <input id="name" type="text" placeholder="Nom"><br><br>
+        <div class="input-title">Quantité</div>
+        <input id="quantity" type="text" placeholder="Quantité"><br><br>
+        <div class="input-title">Date</div>
+        <input id="date" type="date" placeholder="Date"><br><br>
+        <div id="error-message"></div>
+        <button id="close-popup-1" onclick="closePopup()">Annuler</button>
+        <button id="close-popup-1" onclick="add_product()">Ajouter</button>
+      </div>
+      
+    </div>
+  </div>
+
+  <div class="popup-overlay" id="popup-2" style="display: none;">
+    <div class="popup">
+      <h2>Titre du popup</h2>
+      <p>Contenu ou formulaire...</p>
+      <button id="close-popup-2" onclick="closePopup2()">Fermer</button>
+    </div>
+  </div>
+
   <div class="main">
     <header class="main-header" id="main-header">
       <h1>Inventaire</h1>
@@ -24,7 +51,7 @@
       <div id="inventory-container">
         <div class="title-bar">
           <p class="title-sticky title">Inventaire</p>
-          <button class="title-button">+</button>
+          <button class="title-button" onclick="openPopup()">+</button>
         </div>
       </div>
       <div id="right-container">
@@ -97,16 +124,9 @@
         document.getElementById('sidepanel').innerHTML =
           '<nav><a href="/frontend/dashboard.html">Dashboard</a></nav>';
       });
-      
-    
-    add_item("J+14", "200g", "03/09/2025");  
-    add_item("J+13", "200g", "02/09/2025");  
-    add_item("J+8", "200g", "27/08/2025");  
-    add_item("J+7", "200g", "26/08/2025");
-    add_item("J+1", "200g", "20/08/2025");
-    add_item("Demain", "250g", "19/08/2025");
-    add_item("Aujourd'hui", "100g", "18/08/2025");
-    add_item("Hier", "200g", "17/08/2025");
+
+
+
   </script>
 </body>
 </html>

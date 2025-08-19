@@ -43,5 +43,40 @@
     "category": "10",
     "amount": 50.0,
     "date": "18/08/2025"
+  },
+  {
+    "category": "Nourrites",
+    "amount": -99.0,
+    "date": "18/08/2025"
+  },
+  {
+    "category": "Lilly",
+    "amount": 0.1,
+    "date": "18/08/2025"
+  },
+  {
+    "category": "10",
+    "amount": 50.0,
+    "date": "18/08/2025"
+  },
+  {
+    "category": "Nourrites",
+    "amount": -99.0,
+    "date": "18/08/2025"
+  },
+  {
+    "category": "Lilly",
+    "amount": 0.1,
+    "date": "18/08/2025"
+  },
+  {
+    "category": "10",
+    "amount": 50.0,
+    "date": "18/08/2025"
+  },
+  {
+    "category": "a",
+    "amount": 1.0,
+    "date": "19/08/2025"
   }
 ]

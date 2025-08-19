@@ -161,6 +161,10 @@ body {
     grid-template-columns: 7fr 3fr;
 }
 
+
+
+
+
 #popup-overlay {
     display: none; /* caché par défaut */
     position: fixed;

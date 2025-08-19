@@ -28,8 +28,14 @@ class Flow(pydantic.BaseModel):
     date: str
 
 
-FLUX_DATA_PATH = "backend/flux.json"
+class Product(pydantic.BaseModel):
+    name: str
+    quantity: str
+    date: str
 
+
+FLUX_DATA_PATH = "backend/flux.json"
+PRODUCTS_DATA_PATH = "backend/inventory.json"
 
 def safe_write_json(path: str, data: list[dict]):
     """Écrit un JSON de manière atomique (évite fichiers vides si crash)."""
@@ -38,28 +44,31 @@ def safe_write_json(path: str, data: list[dict]):
         json.dump(data, tmp_file, indent=2, ensure_ascii=False)
     os.replace(tmp_path, path)
 
-
-def load_flux() -> list[Flow]:
+def load_json(path: str, type: str) -> list[Flow] | list[Product]:
     """Charge le fichier JSON en Flow[], tolère vide/corrompu."""
-    if not os.path.exists(FLUX_DATA_PATH):
-        safe_write_json(FLUX_DATA_PATH, [])
+    if not os.path.exists(path):
+        safe_write_json(path, [])
         return []
 
     try:
-        with open(FLUX_DATA_PATH, "r", encoding="utf-8") as f:
+        with open(path, "r", encoding="utf-8") as f:
             data = json.load(f)
-            return [Flow(**flow) for flow in data]
+            if type == "flow":
+                return [Flow(**flow) for flow in data]
+            elif type == "product":
+                return [Product(**product) for product in data]
     except (json.JSONDecodeError, FileNotFoundError):
         # fichier vide/corrompu → reset
-        safe_write_json(FLUX_DATA_PATH, [])
+        safe_write_json(path, [])
         return []
 
+def pydantic_to_dict(data: list[Flow] | list[Product]):
+    return [flow.model_dump() for flow in data]
 
-def save_flux(flux_data: list[Flow]):
+def save_json(path: str, data_pydantic: list[Flow] | list[Product]):
     """Sauvegarde la liste de Flow en JSON dict."""
-    dicts = [flow.model_dump() for flow in flux_data]
-    safe_write_json(FLUX_DATA_PATH, dicts)
-
+    dicts = pydantic_to_dict(data_pydantic)
+    safe_write_json(path, dicts)
 
 def sort_flows(flux_data: list[Flow]):
     return sorted(
@@ -67,7 +76,6 @@ def sort_flows(flux_data: list[Flow]):
         key=lambda x: datetime.strptime(x.date, "%d/%m/%Y"),
         reverse=True,
     )
-
 
 def get_last_week_flows(flux_data: list[Flow]):
     last_week_flows = []
@@ -79,7 +87,6 @@ def get_last_week_flows(flux_data: list[Flow]):
             last_week_flows.append(flow)
 
     return last_week_flows
-
 
 def get_inoutlist(flux_data: list[Flow]):
     inflow = []
@@ -105,25 +112,39 @@ def get_inoutlist(flux_data: list[Flow]):
     return list_inflow, list_outflow
 
 
+# FINANCES
+
 @app.get("/finances/get_history/{number}")
 def get_history(number: int = 10):
-    flux = load_flux()
+    flux = load_json(FLUX_DATA_PATH, "flow")
     return flux[::-1][:number]
-
 
 @app.get("/finances/get_graph")
 def get_graph():
-    flux = sort_flows(load_flux())
+    flux = sort_flows(load_json(FLUX_DATA_PATH, "flow"))
     list_inflow, list_outflow = get_inoutlist(get_last_week_flows(flux))
     buf = create_graph(list_outflow, list_inflow)  # renvoie un BytesIO
     return StreamingResponse(buf, media_type="image/png")
 
-
 @app.post("/finances/add_flow")
 def add_flow(flow: Flow):
-    flux = load_flux()
+    flux = load_json(FLUX_DATA_PATH, "flow")
     flux.append(flow)
-    save_flux(flux)
+    save_json(FLUX_DATA_PATH, flux)
+    return {"status": "ok"}
+
+
+# INVENTORY
+
+@app.get("/inventory/get_products")
+def get_products():
+    products = load_json(PRODUCTS_DATA_PATH, "product")
+    return products
+
+@app.post("/inventory/save_products")
+def save_product(products: list[Product]):
+    print(products)
+    save_json(PRODUCTS_DATA_PATH, products)
     return {"status": "ok"}
 
 

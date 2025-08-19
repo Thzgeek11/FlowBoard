@@ -182,7 +182,7 @@ input, button {
     font-size: 1.1rem;
     line-height: 60px;
     text-align: center;
-    overflow: scroll;
+    overflow: hidden;
 
     /* Spécifique à la page finances */
     display: grid;
@@ -222,6 +222,7 @@ input, button {
     grid-column: 2 / 3;
     grid-row: 1 / 2;
     background-color: var(--main-content-right-color);
+    overflow: scroll;
 
     display: grid;
     grid-template-rows: 1fr 350px;
