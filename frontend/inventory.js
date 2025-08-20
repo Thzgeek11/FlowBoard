@@ -28,6 +28,7 @@ function add_item(name, quantity, date) {
 
     const minusBtn = document.createElement("button");
     minusBtn.textContent = "-";
+    minusBtn.classList.add("inventory-item-button-operator-minus");
 
     const qtyEl = document.createElement("p");
     qtyEl.classList.add("inventory-item-quantity");
@@ -35,9 +36,11 @@ function add_item(name, quantity, date) {
 
     const plusBtn = document.createElement("button");
     plusBtn.textContent = "+";
+    plusBtn.classList.add("inventory-item-button-operator-plus");
 
     const removeBtn = document.createElement("button");
     removeBtn.textContent = "🗑️";
+    removeBtn.classList.add("inventory-item-button-remove");
 
     const dateEl = document.createElement("p");
     dateEl.classList.add("inventory-item-date");

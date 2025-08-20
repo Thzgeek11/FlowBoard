@@ -6,6 +6,13 @@
     --main-content-color: #ffffff;
     --green-color: #01c201;
     --red-color: #CD0001;
+
+    --violet-pastel-color: #ff79ff;
+    --blue-pastel-color: #90ccff;
+    --green-pastel-color: #a9dc9f;
+    --yellow-pastel-color: #fff79f;
+    --orange-pastel-color: #ffebcd;
+    --red-pastel-color: #ff7979;
 }
 
 html {
@@ -203,7 +210,7 @@ body {
     padding: 8px 16px;
     border: none;
     border-radius: 25px;
-    background-color: var(--green-color);
+    background-color: var(--blue-pastel-color);
 }
 
 .title-button:hover {
@@ -222,7 +229,7 @@ body {
 
 .inventory-item {
     display: grid;
-    grid-template-columns: 1fr 0.2fr 1fr 0.2fr 1fr 0.2fr;
+    grid-template-columns: 1fr 0.2fr 0.4fr 0.2fr 1fr 0.2fr;
     grid-template-rows: 1fr;
     line-height: 50px;
     background-color: #f5f5f5;
@@ -246,9 +253,30 @@ body {
     background-color: #a9dc9f;
 }
 
+.inventory-item-button-operator-minus, .inventory-item-button-operator-plus, .inventory-item-button-remove {
+    border: none;
+    height: 35px;
+    width: 35px;
+    justify-self: center;
+    align-self: center;
+    border-radius: 25px;
+}
+
+.inventory-item-button-operator-plus {
+    background-color: var(--green-pastel-color);
+}
+
+.inventory-item-button-operator-minus {
+    background-color: var(--red-pastel-color);
+}
+
+.inventory-item-button-operator-minus:hover, .inventory-item-button-operator-plus:hover, .inventory-item-button-remove:hover {
+    cursor: pointer;
+}
+
 .recipe-container {
     display: grid;
-    background-color: #f5f5f5;
+    background-color: #ffeece;
     border-radius: 25px;
     margin: 10px;
 }
@@ -258,7 +286,7 @@ body {
     grid-template-columns: 1.6fr 1fr 0.6fr 0.1fr;
     grid-template-rows: 1fr;
     line-height: 50px;
-    background-color: #e6e6e6;
+    background-color: #ffd381;
     border-radius: 20px;
     margin: 10px;
 }
@@ -274,7 +302,7 @@ verticalement et horizontalement */
     margin-right: 16px;
     border-radius: 25px;
     border: none;
-    background-color: var(--green-color);
+    background-color: var(--blue-pastel-color);
 }
 
 .recipe-container button:hover {
@@ -286,7 +314,7 @@ verticalement et horizontalement */
     grid-template-columns: 1fr;
     grid-template-rows: auto;
     margin: 0px 10px 10px 10px;
-    background-color: #e6e6e6;
+    background-color: #fae5ac;
     border-radius: 25px;
     padding-top: 10px;
 }
@@ -296,7 +324,7 @@ verticalement et horizontalement */
     grid-template-columns: 1fr 0.5fr 0.1fr;
     grid-template-rows: 1fr;
     border-radius: 20px;
-    background-color: #ececec;
+    background-color: #ffd96f;
     margin: 0px 10px 10px 10px;
 }
 
