@@ -28,6 +28,7 @@ function add_item(name, quantity, date) {
 
     const minusBtn = document.createElement("button");
     minusBtn.textContent = "-";
+    minusBtn.type = "button";
     minusBtn.classList.add("inventory-item-button-operator-minus");
 
     const qtyEl = document.createElement("p");
@@ -36,10 +37,12 @@ function add_item(name, quantity, date) {
 
     const plusBtn = document.createElement("button");
     plusBtn.textContent = "+";
+    plusBtn.type = "button";
     plusBtn.classList.add("inventory-item-button-operator-plus");
 
     const removeBtn = document.createElement("button");
     removeBtn.textContent = "🗑️";
+    removeBtn.type = "button";
     removeBtn.classList.add("inventory-item-button-remove");
 
     const dateEl = document.createElement("p");
@@ -76,9 +79,20 @@ function add_item(name, quantity, date) {
         save_products();
     }
 
-    plusBtn.addEventListener("click", () => updateQuantity(+1));
-    minusBtn.addEventListener("click", () => updateQuantity(-1));
-    removeBtn.addEventListener("click", () => remove_item(item));
+    plusBtn.addEventListener("click", (e) => {
+        e.preventDefault();   // empêche tout refresh
+        updateQuantity(+1);
+    });
+    
+    minusBtn.addEventListener("click", (e) => {
+        e.preventDefault();
+        updateQuantity(-1);
+    });
+    
+    removeBtn.addEventListener("click", (e) => {
+        e.preventDefault();
+        remove_item(item);
+    });
 
     // Ajout à l'item
     item.appendChild(title);
@@ -92,6 +106,7 @@ function add_item(name, quantity, date) {
 }
 
 function openPopup() {
+    refresh();
     const popup = document.getElementById("popup-1");
     popup.style.display = "flex";
 }
@@ -110,16 +125,20 @@ function add_product() {
     save_products();
 }
 
+function refresh() {
+    const inventory_items = Array.from(document.getElementsByClassName("inventory-item"));
+    inventory_items.forEach(item => item.remove());
+
+    get_products();
+}
 
 function get_products() {
     fetch("http://192.168.1.49:5600/inventory/get_products")
     .then(res => {
-        console.log(res);
         if (!res.ok) throw new Error("Erreur lors de la récupération des produits");
         return res.json();
     })
     .then(data => {
-        console.log(data);
         data.forEach(product => {
             // Reformater au format DD/MM/YYYY
             let formattedDate = formatDate(product.date);

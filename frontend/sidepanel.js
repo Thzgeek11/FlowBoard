@@ -26,5 +26,15 @@ function toggleMenu() {
 }
 
 window.addEventListener("orientationchange", () => {
-    location.reload();
+    if (isOpen == false) {
+        toggleMenu();
+    }
 });
+
+
+
+window.onload = () => {
+    if (window.innerWidth < 800) {
+        return new Promise(resolve => setTimeout(toggleMenu, 100)).then(resolve => setTimeout(resolve, 1000));
+    }
+};

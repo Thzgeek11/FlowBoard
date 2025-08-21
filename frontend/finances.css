@@ -186,14 +186,14 @@ input, button {
 
     /* Spécifique à la page finances */
     display: grid;
-    grid-template-columns: 7fr 3fr;
+    grid-template-columns: 1fr 550px;
 }
 
 .title-sticky {
     position: sticky;
     top: 0;
     z-index: 1;
-    background-color: var(--main-content-right-color);
+    background-color: #e7e7e7;
 }
 
 #graph-container {
@@ -225,7 +225,7 @@ input, button {
     overflow: scroll;
 
     display: grid;
-    grid-template-rows: 1fr 350px;
+    grid-template-rows: auto 350px;
     grid-template-columns: minmax(500px, 1fr);
 }
 
@@ -233,35 +233,44 @@ input, button {
     grid-column: 1 / 2;
     grid-row: 1 / 2;
     line-height: 60px;
-    overflow: scroll;
+    overflow-y: auto;   /* scroll uniquement si nécessaire */
     scrollbar-color: transparent;
     position: relative;
     border-bottom: 1px solid #e9e9e9;
 }
 
-.influx {
-    color: var(--green-color);
+.influx, .outflux {
     display: grid;
-    grid-template-columns: 0.8fr 0.8fr 1fr;
+    grid-template-columns: 0.8fr 0.3fr 0.65fr;
     grid-template-rows: 1fr;
     line-height: 50px;
+    background-color: #f1f1f1;
+    border-radius: 15px;
+    margin: 10px;
+}
+
+.influx {
+    color: var(--green-color);
 }
 
 .outflux {
-    color: var(--red-color);
-    display: grid;
-    grid-template-columns: 0.8fr 0.8fr 1fr;
-    grid-template-rows: 1fr;
-    line-height: 50px;    
+    color: var(--red-color); 
+}
+
+.flux-item-title, .flux-item-quantity, .flux-item-date {
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
 }
 
 #right-container-bottom {
     grid-column: 1 / 2;
     grid-row: 2 / 3;
-    background-color: var(--main-content-right-color);
-    border-radius: 15px;
+    height: 350px;   /* optionnel car déjà défini par la grid */
+    overflow-y: auto;
     overflow-x: hidden;
-    overflow-y: scroll;
+    background-color: var(--main-content-right-color);
+    
     scrollbar-color: #cccccc transparent;
     line-height: 60px;
 }
@@ -299,10 +308,6 @@ input, button {
     bottom: 10px;
     text-align: center;
 }
-
-
-
-
 
 
 @media (max-width: 800px) {
@@ -368,6 +373,7 @@ input, button {
         grid-template-columns: auto;
         grid-template-rows: 315px 600px 200px;
         text-indent: 16px;
+        overflow: scroll;
     }
 
     #right-container {

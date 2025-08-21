@@ -1,5 +1,5 @@
 function add_flow() {
-    let dateValue = document.getElementById("date").value; // "2025-08-15"
+    let dateValue = document.getElementById("date").value;
     
     // Reformater au format DD/MM/YYYY
     let [year, month, day] = dateValue.split("-");

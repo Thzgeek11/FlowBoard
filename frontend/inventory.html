@@ -24,7 +24,7 @@
         <div class="input-title">Date</div>
         <input id="date" type="date" placeholder="Date"><br><br>
         <div id="error-message"></div>
-        <button id="close-popup-1" onclick="closePopup()">Annuler</button>
+        <button id="close-popup-1" onclick="closePopup()">Retour</button>
         <button id="close-popup-1" onclick="add_product()">Ajouter</button>
       </div>
       
@@ -49,8 +49,8 @@
 
     <main class="main-content">
       <div id="inventory-container">
-        <div class="title-bar">
-          <p class="title-sticky title">Inventaire</p>
+        <div class="title-sticky title-bar">
+          <p class="title">Inventaire</p>
           <button class="title-button" onclick="openPopup()">+</button>
         </div>
       </div>
@@ -65,7 +65,7 @@
             <p class="recipe-item-title">Pâtes à la Carbonara</p>
             <p class="recipe-item-quantite">1 personne</p>
             <p class="recipe-item-temps">20min</p>
-            <button>+</button>
+            <button class="recipe-item-button">+</button>
           </div>
           <div class="recipe-ingredients">
             <div class="recipe-ingredient"><p>Pâtes (Spaghetti)</p><p>90g</p><button>+</button></div>
@@ -80,7 +80,7 @@
             <p class="recipe-item-title">Pâtes à la Carbonara</p>
             <p class="recipe-item-quantite">1 personne</p>
             <p class="recipe-item-temps">20min</p>
-            <button>+</button>
+            <button class="recipe-item-button">+</button>
           </div>
           <div class="recipe-ingredients">
             <div class="recipe-ingredient"><p>Pâtes (Spaghetti)</p><p>90g</p><button>+</button></div>
@@ -96,7 +96,7 @@
             <p class="recipe-item-title">Pâtes à la Carbonara</p>
             <p class="recipe-item-quantite">1 personne</p>
             <p class="recipe-item-temps">20min</p>
-            <button>+</button>
+            <button class="recipe-item-button">+</button>
           </div>
           <div class="recipe-ingredients">
             <div class="recipe-ingredient"><p>Pâtes (Spaghetti)</p><p>90g</p><button>+</button></div>
@@ -125,8 +125,12 @@
           '<nav><a href="/frontend/dashboard.html">Dashboard</a></nav>';
       });
 
-
-
+      const input = document.getElementById("date");
+      const today = new Date();
+      const yyyy = today.getFullYear();
+      const mm = String(today.getMonth() + 1).padStart(2, '0'); // mois sur 2 chiffres
+      const dd = String(today.getDate()).padStart(2, '0'); // jour sur 2 chiffres
+      input.value = `${yyyy}-${mm}-${dd}`;
   </script>
 </body>
 </html>
