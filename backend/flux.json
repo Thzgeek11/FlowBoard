@@ -23,5 +23,65 @@
     "category": "Phone3",
     "amount": -25.6,
     "date": "13/08/2025"
+  },
+  {
+    "category": "Pâtes ",
+    "amount": -2.5,
+    "date": "18/08/2025"
+  },
+  {
+    "category": "Nourrites",
+    "amount": -99.0,
+    "date": "18/08/2025"
+  },
+  {
+    "category": "Lilly",
+    "amount": 0.1,
+    "date": "18/08/2025"
+  },
+  {
+    "category": "10",
+    "amount": 50.0,
+    "date": "18/08/2025"
+  },
+  {
+    "category": "Nourriteeeeeeeeeeeeeeees",
+    "amount": -99.0,
+    "date": "18/08/2025"
+  },
+  {
+    "category": "Lilly",
+    "amount": 0.1,
+    "date": "18/08/2025"
+  },
+  {
+    "category": "10",
+    "amount": 50.0,
+    "date": "18/08/2025"
+  },
+  {
+    "category": "Nourrites",
+    "amount": -99.0,
+    "date": "18/08/2025"
+  },
+  {
+    "category": "Lilly",
+    "amount": 0.1,
+    "date": "18/08/2025"
+  },
+  {
+    "category": "10",
+    "amount": 50.0,
+    "date": "18/08/2025"
+  },
+  {
+    "category": "a",
+    "amount": 1.0,
+    "date": "19/08/2025"
+  },
+  {
+    "category": "BCPppppppppppppppppppppppppppppppppppppppppppppppp",
+    "amount": 10.0,
+    "date": "22/08/2025"
   }
 ]
