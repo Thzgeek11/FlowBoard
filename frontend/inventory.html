@@ -3,24 +3,106 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no "/>
-  <link rel="stylesheet" href="/frontend/style.css" />
+  <link rel="stylesheet" href="/frontend/inventory.css" />
   <script src="/frontend/sidepanel.js"></script>
+  <script src="/frontend/inventory.js"></script>
   <title>FlowBoard - Inventaire</title>
 </head>
 <body>
   <!-- on utilise un id pour cibler facilement -->
   <div id="sidepanel"></div>
 
+  <!-- Popup 1 -->
+  <div class="popup-overlay" id="popup-1" style="display: none;">
+    <div class="popup">
+      <h2>Ajouter un produit</h2><br>
+
+      <div class="popup-content">
+        <div class="input-title">Nom</div>
+        <input id="name" type="text" placeholder="Nom"><br><br>
+        <div class="input-title">Quantité</div>
+        <input id="quantity" type="text" placeholder="Quantité"><br><br>
+        <div class="input-title">Date</div>
+        <input id="date" type="date" placeholder="Date"><br><br>
+        <div id="error-message"></div>
+        <button id="close-popup-1" onclick="closePopup()" style="background-color: var(--red-pastel-color);">Retour</button>
+        <button id="close-popup-1" onclick="add_product()" style="background-color: var(--green-pastel-color);">Ajouter</button>
+      </div>
+      
+    </div>
+  </div>
+
+  <!-- Popup 2 -->
+  <div class="popup-overlay" id="popup-2" style="display: none;">
+    <div class="popup">
+      <h2>Ajouter une recette</h2><br>
+
+      <div class="popup-content" id="popup2-container">
+        <div class="input-title">Nom</div>
+        <input id="popup2-name" type="text" placeholder="Riz Cantonais"><br><br>
+        <div class="input-title">Quantité</div>
+        <input id="popup2-quantity" type="text" placeholder="1 personne"><br><br>
+        <div class="input-title">Temps de cuisson</div>
+        <input id="popup2-date" type="time" placeholder="Temps de cuisson"><br><br>
+
+        <div class="input-title">Ingrédients</div>
+        <input class="popup2-ingredient" type="text" placeholder="Riz">
+        <input class="popup2-quantity" type="text" placeholder="75g"><br><br>
+
+        <button class="popup2-add-ingredient" onclick="popup2_add_ingredient()">+</button>
+
+
+        <div id="error-message"></div>
+        <button id="close-popup-2" onclick="closePopup2()" style="background-color: var(--red-pastel-color);">Retour</button>
+        <button id="close-popup-2" onclick="popup2_add_recipe()" style="background-color: var(--green-pastel-color);">Ajouter</button>
+      </div>
+      
+    </div>
+  </div>
+
+  <!-- Main -->
   <div class="main">
     <header class="main-header" id="main-header">
-      <h1>Inventaire</h1>
+      <h1>📦 Inventaire</h1>
       <div class="main-header-right">
         <button aria-label="logout" onclick="window.location.href = '/frontend/index.html'"><img src="icons/logout.png" alt="Logout"></button>
       </div>
     </header>
 
+    <!-- Main Content -->
     <main class="main-content">
-      <p>Ici se trouvera l'inventaire.</p>
+      <!-- Left Container -->
+      <div id="inventory-container">
+        <div class="title-sticky title-bar">
+          <p class="title">Inventaire</p>
+          <button class="title-button" onclick="openPopup()" title="Ajouter un produit">+</button>
+        </div>
+      </div>
+      <!-- Right Container -->
+      <div id="right-container">
+        <div class="title-sticky title-bar">
+          <p class="title">Recettes</p>
+          <button class="title-button" onclick="openPopup2()" title="Ajouter une recette">+</button>
+        </div>
+
+        <!-- Recettes
+        <div class="recipe-container">
+          <div class="recipe-header">
+            <p class="recipe-item-title">Pâtes à la Carbonara</p>
+            <p class="recipe-item-quantite">1 personne</p>
+            <p class="recipe-item-temps">20min</p>
+            <button class="recipe-item-button">+</button>
+          </div>
+          <div class="recipe-ingredients">
+            <div class="recipe-ingredient"><p>Pâtes (Spaghetti)</p><p>90g</p><button>+</button></div>
+            <div class="recipe-ingredient"><p>Parmesan</p><p></p><button>+</button></div>
+            <div class="recipe-ingredient"><p>Lardons</p><p>100g</p><button>+</button></div>
+            <div class="recipe-ingredient"><p>Oeufs</p><p>1</p><button>+</button></div>
+          </div>
+        </div>
+         -->
+
+      </div>
     </main>
   </div>
 
@@ -38,6 +120,13 @@
         document.getElementById('sidepanel').innerHTML =
           '<nav><a href="/frontend/dashboard.html">Dashboard</a></nav>';
       });
+
+      const input = document.getElementById("date");
+      const today = new Date();
+      const yyyy = today.getFullYear();
+      const mm = String(today.getMonth() + 1).padStart(2, '0'); // mois sur 2 chiffres
+      const dd = String(today.getDate()).padStart(2, '0'); // jour sur 2 chiffres
+      input.value = `${yyyy}-${mm}-${dd}`;
   </script>
 </body>
 </html>
