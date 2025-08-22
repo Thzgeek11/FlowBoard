@@ -365,6 +365,11 @@ input, button {
     border-radius: 12px;
     box-shadow: 0 4px 15px rgba(0,0,0,0.3);
     text-align: center;
+    min-height: 0;
+    max-height: 80vh;
+    overflow: scroll;
+    scrollbar-color: transparent;
+    scrollbar-width: none;
 }
 
 .input-title {
@@ -372,6 +377,26 @@ input, button {
     margin-right: 6px;
 }
 
+.popup2-ingredient {
+    width: 150px;
+}
+
+.popup2-quantity {
+    width: 75px;
+}
+
+.popup2-add-ingredient {
+    border: none;
+    height: 35px;
+    width: 35px;
+    justify-self: center;
+    align-self: center;
+    border-radius: 25px;
+    border: none;
+    background-color: var(--blue-pastel-color);
+    position: relative;
+    top: -8px;
+}
 
 
 
@@ -538,5 +563,32 @@ input, button {
     
     .popup {
         margin: 10px;
+    }
+
+    .input-title {
+        display: inline;
+        margin-right: 6px;
+        font-size: 0.8rem;
+    }
+    
+    .popup2-ingredient {
+        width: 90px;
+    }
+    
+    .popup2-quantity {
+        width: 50px;
+    }
+    
+    .popup2-add-ingredient {
+        border: none;
+        height: 35px;
+        width: 35px;
+        justify-self: center;
+        align-self: center;
+        border-radius: 25px;
+        border: none;
+        background-color: var(--blue-pastel-color);
+        position: relative;
+        top: -8px;
     }
 }

@@ -245,7 +245,7 @@ input, button {
     grid-template-rows: 1fr;
     line-height: 50px;
     background-color: #f1f1f1;
-    border-radius: 15px;
+    border-radius: 25px;
     margin: 10px;
 }
 

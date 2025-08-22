@@ -27,15 +27,26 @@ class Flow(pydantic.BaseModel):
     amount: float
     date: str
 
-
 class Product(pydantic.BaseModel):
     name: str
     quantity: str
     date: str
 
 
+class Ingredient(pydantic.BaseModel):
+    name: str
+    quantity: str
+
+class Recipe(pydantic.BaseModel):
+    name: str
+    quantity: str
+    temps: str
+    ingredients: list[Ingredient]
+
+
 FLUX_DATA_PATH = "backend/flux.json"
 PRODUCTS_DATA_PATH = "backend/inventory.json"
+RECIPES_DATA_PATH = "backend/recipe.json"
 
 def safe_write_json(path: str, data: list[dict]):
     """Écrit un JSON de manière atomique (évite fichiers vides si crash)."""
@@ -44,7 +55,7 @@ def safe_write_json(path: str, data: list[dict]):
         json.dump(data, tmp_file, indent=2, ensure_ascii=False)
     os.replace(tmp_path, path)
 
-def load_json(path: str, type: str) -> list[Flow] | list[Product]:
+def load_json(path: str, type: str) -> list[Flow] | list[Product] | list[Recipe]:
     """Charge le fichier JSON en Flow[], tolère vide/corrompu."""
     if not os.path.exists(path):
         safe_write_json(path, [])
@@ -57,15 +68,17 @@ def load_json(path: str, type: str) -> list[Flow] | list[Product]:
                 return [Flow(**flow) for flow in data]
             elif type == "product":
                 return [Product(**product) for product in data]
+            elif type == "recipe":
+                return [Recipe(**recipe) for recipe in data]
     except (json.JSONDecodeError, FileNotFoundError):
         # fichier vide/corrompu → reset
         safe_write_json(path, [])
         return []
 
-def pydantic_to_dict(data: list[Flow] | list[Product]):
+def pydantic_to_dict(data: list[Flow] | list[Product] | list[Recipe]):
     return [flow.model_dump() for flow in data]
 
-def save_json(path: str, data_pydantic: list[Flow] | list[Product]):
+def save_json(path: str, data_pydantic: list[Flow] | list[Product] | list[Recipe]):
     """Sauvegarde la liste de Flow en JSON dict."""
     dicts = pydantic_to_dict(data_pydantic)
     safe_write_json(path, dicts)
@@ -131,7 +144,7 @@ def add_flow(flow: Flow):
     flux = load_json(FLUX_DATA_PATH, "flow")
     flux.append(flow)
     save_json(FLUX_DATA_PATH, flux)
-    return {"status": "ok"}
+    return {"status": "success", "message": "Flux ajouté avec succès"}
 
 
 # INVENTORY
@@ -145,8 +158,17 @@ def get_products():
 def save_product(products: list[Product]):
     print(products)
     save_json(PRODUCTS_DATA_PATH, products)
-    return {"status": "ok"}
+    return {"status": "success", "message": "Produits sauvegardés avec succès"}
 
+@app.post("/inventory/save_recipes")
+def save_recipes(recipes: list[Recipe]):
+    save_json(RECIPES_DATA_PATH, recipes)
+    return {"status": "success", "message": "Recettes sauvegardées avec succès"}
+
+@app.get("/inventory/get_recipes")
+def get_recipes():
+    recipes = load_json(RECIPES_DATA_PATH, "recipe")
+    return recipes
 
 if __name__ == "__main__":
     uvicorn.run(app, host="0.0.0.0", port=5600)

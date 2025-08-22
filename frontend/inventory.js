@@ -105,12 +105,6 @@ function add_item(name, quantity, date) {
     inventory_container.appendChild(item);
 }
 
-function openPopup() {
-    refresh();
-    const popup = document.getElementById("popup-1");
-    popup.style.display = "flex";
-}
-
 function add_product() {
     const name = document.getElementById("name").value;
     const quantity = document.getElementById("quantity").value;
@@ -166,16 +160,81 @@ function save_products() {
         body: JSON.stringify(products)
     })
     .then(res => {
-        console.log(res);
         if (!res.ok) throw new Error("Erreur lors de la sauvegarde des produits");
         return res.json();
     })
-    .then(data => console.log(data))
     .catch(err => {
         const errorContainer = document.getElementById("error-message");
         errorContainer.innerHTML = "Erreur lors de la sauvegarde des produits";
         errorContainer.style.color = "red";
     });
+}
+
+function save_recipes() {
+    const recipeContainers = document.querySelectorAll(".recipe-container");
+    const recipes = [];
+
+    recipeContainers.forEach(container => {
+        const header = container.querySelector(".recipe-header");
+        if (!header) return;
+
+        const name = header.querySelector(".recipe-item-title")?.textContent.trim() || "";
+        const quantity = header.querySelector(".recipe-item-quantite")?.textContent.trim() || "";
+        const temps = header.querySelector(".recipe-item-temps")?.textContent.trim() || "";
+        
+        const ingredients = [];
+        const ingredientElements = container.querySelectorAll(".recipe-ingredient");
+        ingredientElements.forEach(ingredientEl => {
+            const nameElement = ingredientEl.querySelector("p:first-child");
+            const quantityElement = ingredientEl.querySelector("p:not(:first-child)");
+            
+            const name = nameElement ? nameElement.textContent.trim() : "";
+            // On prend le premier paragraphe qui n'est pas le premier (pour éviter les problèmes si plusieurs paragraphes)
+            const quantity = quantityElement ? quantityElement.textContent.trim() : "";
+            
+            if (name) {
+                ingredients.push({ name, quantity });
+            }
+        });
+
+        if (name) {
+            recipes.push({
+                name,
+                quantity,
+                temps,
+                ingredients
+            });
+        }
+    });
+    
+    fetch("http://192.168.1.49:5600/inventory/save_recipes", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(recipes)
+    })
+    .then(res => {
+        if (!res.ok) throw new Error("Erreur lors de la sauvegarde des recettes");
+        return res.json();
+    })
+    .then(data => {
+        closePopup2(); // Fermer la popup après sauvegarde
+    })
+    .catch(err => {
+        console.error("Erreur:", err);
+        const errorContainer = document.getElementById("error-message");
+        errorContainer.textContent = "Erreur lors de la sauvegarde des recettes";
+        errorContainer.style.color = "red";
+    });
+}
+
+function add_recipe() {
+    const name = document.getElementById("name").value;
+    const quantity = document.getElementById("quantity").value;
+    let date = document.getElementById("date").value; // format HTML input = YYYY-MM-DD
+
+    if (!name || !quantity || !date) return;
+
+    
 }
 
 function formatDate(date) {
@@ -188,11 +247,165 @@ function formatDate(date) {
     return date;
 }
 
-
+function openPopup() {
+    refresh();
+    const popup = document.getElementById("popup-1");
+    popup.style.display = "flex";
+}
 
 function closePopup() {
     const popup = document.getElementById("popup-1");
     popup.style.display = "none";
+}
+
+function openPopup2() {
+    refresh();
+    const popup = document.getElementById("popup-2");
+    popup.style.display = "flex";
+}
+
+function popup2_add_ingredient() {
+    const popup2_container = document.getElementById("popup2-container");
+    
+    const inputTitle = document.createElement("div");
+    inputTitle.classList.add("input-title");
+    inputTitle.textContent = "Ingrédients";
+    inputTitle.style.marginRight = "14px";
+    
+    const ingredientInput = document.createElement("input");
+    ingredientInput.classList.add("popup2-ingredient");
+    ingredientInput.type = "text";
+    ingredientInput.placeholder = "Riz";
+    ingredientInput.style.marginRight = "6.5px";
+    
+    const quantityInput = document.createElement("input");
+    quantityInput.classList.add("popup2-quantity");
+    quantityInput.type = "text";
+    quantityInput.placeholder = "75g";
+    
+    
+    const br = document.createElement("br");
+    
+    // Insérer avant les 3 derniers éléments
+    const insertPosition = popup2_container.children.length - 4;
+    popup2_container.insertBefore(br.cloneNode(), popup2_container.children[insertPosition]);
+    popup2_container.insertBefore(br, popup2_container.children[insertPosition]);
+    popup2_container.insertBefore(quantityInput, popup2_container.children[insertPosition]);
+    popup2_container.insertBefore(ingredientInput, popup2_container.children[insertPosition]);
+    popup2_container.insertBefore(inputTitle, popup2_container.children[insertPosition]);  
+}
+
+function popup2_add_recipe() {
+    const name = document.getElementById("popup2-name").value;
+    let quantity = document.getElementById("popup2-quantity").value;
+    let temps = document.getElementById("popup2-date").value;
+    const ingredients = Array.from(document.querySelectorAll(".popup2-ingredient"))
+        .map((input, index) => {
+            const name = input.value;
+            const quantityInput = document.querySelectorAll(".popup2-quantity")[index];
+            const quantity = quantityInput ? quantityInput.value : "";
+            return { name, quantity };
+        })
+        .filter(ingredient => ingredient.name); // Ne pas ajouter les ingrédients sans nom
+
+    if (temps == NaN) {
+        temps = "???min";
+    } else {
+        const [hours, minutes] = temps.split(":");
+        temps = parseInt(hours) * 60 + parseInt(minutes) + "min";
+    }
+    
+    if (quantity == 1) {
+        quantity = quantity + " personne";
+    } else {
+        quantity = quantity + " personnes";
+    }
+    
+    add_recipe(name, quantity, temps, ingredients);
+    save_recipes();
+    closePopup2();
+}
+
+function get_recipes() {
+    fetch("http://192.168.1.49:5600/inventory/get_recipes")
+    .then(res => {
+        if (!res.ok) throw new Error("Erreur lors de la récupération des recettes");
+        return res.json();
+    })
+    .then(data => {
+        data.forEach(recipe => {
+            add_recipe(recipe.name, recipe.quantity, recipe.temps, recipe.ingredients);
+        });
+    })
+    .catch(err => {
+        const errorContainer = document.getElementById("error-message");
+        errorContainer.innerHTML = "Erreur lors de la récupération des recettes";
+        errorContainer.style.color = "red";
+    });
+}
+
+function add_recipe(name, quantity, temps, ingredients) {
+    const rightContainer = document.getElementById("right-container");
+
+    if (!rightContainer) {
+        console.error("Right container not found");
+        return;
+    }
+
+    const recipeContainer = document.createElement("div");
+    recipeContainer.classList.add("recipe-container");
+    
+    const recipeHeader = document.createElement("div");
+    recipeHeader.classList.add("recipe-header");
+    
+    const recipeTitle = document.createElement("p");
+    recipeTitle.classList.add("recipe-item-title");
+    recipeTitle.textContent = name;
+    
+    const recipeQuantity = document.createElement("p");
+    recipeQuantity.classList.add("recipe-item-quantite");
+    recipeQuantity.textContent = quantity;
+    
+    const recipeTime = document.createElement("p");
+    recipeTime.classList.add("recipe-item-temps");
+    recipeTime.textContent = temps;
+    
+    const recipeButton = document.createElement("button");
+    recipeButton.classList.add("recipe-item-button");
+    recipeButton.textContent = "+";
+    
+    recipeHeader.appendChild(recipeTitle);
+    recipeHeader.appendChild(recipeQuantity);
+    recipeHeader.appendChild(recipeTime);
+    recipeHeader.appendChild(recipeButton);
+    
+    const recipeIngredients = document.createElement("div");
+    recipeIngredients.classList.add("recipe-ingredients");
+    
+    ingredients.forEach(ingredient => {
+        const ingredientElement = document.createElement("div");
+        ingredientElement.classList.add("recipe-ingredient");
+        
+        const ingredientName = document.createElement("p");
+        ingredientName.textContent = ingredient.name;
+        
+        const ingredientQuantity = document.createElement("p");
+        ingredientQuantity.textContent = ingredient.quantity;
+        
+        const ingredientButton = document.createElement("button");
+        ingredientButton.textContent = "+";
+        
+        ingredientElement.appendChild(ingredientName);
+        ingredientElement.appendChild(ingredientQuantity);
+        ingredientElement.appendChild(ingredientButton);
+        
+        recipeIngredients.appendChild(ingredientElement);
+    });
+    
+    recipeContainer.appendChild(recipeHeader);
+    recipeContainer.appendChild(recipeIngredients);
+    
+    rightContainer.appendChild(recipeContainer);
 }
 
 function closePopup2() {
@@ -200,4 +413,8 @@ function closePopup2() {
     popup.style.display = "none";
 }
 
-get_products();
+// Attendre que le DOM soit complètement chargé
+document.addEventListener('DOMContentLoaded', function() {
+    get_products();
+    get_recipes();
+});
