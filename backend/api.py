@@ -17,7 +17,7 @@ app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],  # ton site
     allow_credentials=True,
-    allow_methods=["*"],  # GET, POST, etc.
+    allow_methods=["*"],
     allow_headers=["*"],
 )
 
@@ -43,10 +43,17 @@ class Recipe(pydantic.BaseModel):
     temps: str
     ingredients: list[Ingredient]
 
+class Shopping_Product(pydantic.BaseModel):
+    name: str
+    quantity: str
+    actual_quantity: str
+    date: str
+    checked: bool
 
 FLUX_DATA_PATH = "backend/flux.json"
 PRODUCTS_DATA_PATH = "backend/inventory.json"
 RECIPES_DATA_PATH = "backend/recipe.json"
+COURSES_LIST_DATA_PATH = "backend/courses_list.json"
 
 def safe_write_json(path: str, data: list[dict]):
     """Écrit un JSON de manière atomique (évite fichiers vides si crash)."""
@@ -55,7 +62,7 @@ def safe_write_json(path: str, data: list[dict]):
         json.dump(data, tmp_file, indent=2, ensure_ascii=False)
     os.replace(tmp_path, path)
 
-def load_json(path: str, type: str) -> list[Flow] | list[Product] | list[Recipe]:
+def load_json(path: str, type: str) -> list[Flow] | list[Product] | list[Recipe] | list[Shopping_Product]:
     """Charge le fichier JSON en Flow[], tolère vide/corrompu."""
     if not os.path.exists(path):
         safe_write_json(path, [])
@@ -70,15 +77,17 @@ def load_json(path: str, type: str) -> list[Flow] | list[Product] | list[Recipe]
                 return [Product(**product) for product in data]
             elif type == "recipe":
                 return [Recipe(**recipe) for recipe in data]
+            elif type == "shopping_product":
+                return [Shopping_Product(**shopping_product) for shopping_product in data]
     except (json.JSONDecodeError, FileNotFoundError):
         # fichier vide/corrompu → reset
         safe_write_json(path, [])
         return []
 
-def pydantic_to_dict(data: list[Flow] | list[Product] | list[Recipe]):
+def pydantic_to_dict(data: list[Flow] | list[Product] | list[Recipe] | list[Shopping_Product]):
     return [flow.model_dump() for flow in data]
 
-def save_json(path: str, data_pydantic: list[Flow] | list[Product] | list[Recipe]):
+def save_json(path: str, data_pydantic: list[Flow] | list[Product] | list[Recipe] | list[Shopping_Product]):
     """Sauvegarde la liste de Flow en JSON dict."""
     dicts = pydantic_to_dict(data_pydantic)
     safe_write_json(path, dicts)
@@ -158,17 +167,48 @@ def get_products():
 def save_product(products: list[Product]):
     print(products)
     save_json(PRODUCTS_DATA_PATH, products)
-    return {"status": "success", "message": "Produits sauvegardés avec succès"}
+    return {"status": "success", "message": "Produits sauvegardés avec succès"}    
+
+@app.get("/inventory/get_recipes")
+def get_recipes():
+    recipes = load_json(RECIPES_DATA_PATH, "recipe")
+    return recipes
 
 @app.post("/inventory/save_recipes")
 def save_recipes(recipes: list[Recipe]):
     save_json(RECIPES_DATA_PATH, recipes)
     return {"status": "success", "message": "Recettes sauvegardées avec succès"}
 
-@app.get("/inventory/get_recipes")
-def get_recipes():
-    recipes = load_json(RECIPES_DATA_PATH, "recipe")
-    return recipes
+
+# SHOPPING
+
+@app.post("/shopping/save_shopping")
+def save_shopping(shopping: list[Shopping_Product]):
+    save_json(COURSES_LIST_DATA_PATH, shopping)
+    return {"status": "success", "message": "Courses sauvegardées avec succès"}
+
+@app.get("/shopping/get_shopping")
+def get_shopping():
+    shopping = load_json(COURSES_LIST_DATA_PATH, "shopping_product")
+    return shopping
+
+@app.post("/shopping/add_shopping_item_to_inventory")
+def add_shopping_item_to_inventory(shopping_product: Shopping_Product):
+    inventory = load_json(PRODUCTS_DATA_PATH, "product")
+    inventory.append(Product(name=shopping_product.name, quantity=shopping_product.actual_quantity, date=shopping_product.date))
+    save_json(PRODUCTS_DATA_PATH, inventory)
+    return {"status": "success", "message": "Courses ajoutées avec succès dans l'inventaire"}
+
+
+
+
+
+
+
+
+
+
+
 
 if __name__ == "__main__":
     uvicorn.run(app, host="0.0.0.0", port=5600)

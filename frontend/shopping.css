@@ -239,6 +239,23 @@ body {
     justify-self: right;
 }
 
+.list-item-delete-button:hover {
+    cursor: pointer;
+}
+
+.list-item-square {
+    justify-self: center;
+}
+
+.list-item-square a {
+    text-decoration: none;
+    color: #fff;
+}
+
+.list-item-square a:hover {
+    cursor: pointer;
+}
+
 input, button {
     overflow: hidden;
     border: 0px solid #202020;
