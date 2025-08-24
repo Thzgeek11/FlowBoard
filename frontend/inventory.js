@@ -168,6 +168,9 @@ function save_products() {
         errorContainer.innerHTML = "Erreur lors de la sauvegarde des produits";
         errorContainer.style.color = "red";
     });
+
+    const recipe_button_plus = document.getElementsByClassName("recipe-ingredient-button");
+    Array.from(recipe_button_plus).forEach(button => should_be_displayed(button));
 }
 
 function save_recipes() {
@@ -233,8 +236,6 @@ function add_recipe() {
     let date = document.getElementById("date").value; // format HTML input = YYYY-MM-DD
 
     if (!name || !quantity || !date) return;
-
-    
 }
 
 function formatDate(date) {
@@ -394,23 +395,99 @@ function add_recipe(name, quantity, temps, ingredients) {
         
         const ingredientButton = document.createElement("button");
         ingredientButton.textContent = "+";
-        
+        ingredientButton.classList.add("recipe-ingredient-button");
+        ingredientButton.addEventListener("click", () => {
+            add_to_course_list(ingredient.name, ingredient.quantity);
+        });
+
         ingredientElement.appendChild(ingredientName);
         ingredientElement.appendChild(ingredientQuantity);
         ingredientElement.appendChild(ingredientButton);
         
         recipeIngredients.appendChild(ingredientElement);
+        should_be_displayed(ingredientButton);
     });
     
     recipeContainer.appendChild(recipeHeader);
     recipeContainer.appendChild(recipeIngredients);
     
     rightContainer.appendChild(recipeContainer);
+
+    recipeButton.addEventListener("click", () => {
+        add_whole_recipe(ingredients);
+    });
+    
+}
+
+function add_to_course_list(ingredientName, ingredientQuantity) {
+    if (ingredientQuantity == "") {
+        ingredientQuantity = "1";
+    }
+    fetch("http://192.168.1.49:5600/inventory/add_to_course_list", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name: ingredientName, quantity: ingredientQuantity, actual_quantity: "", date: "", checked: false })
+    })
+    .then(res => {
+        if (!res.ok) {
+            showNotification("⚠️ Erreur lors de l'ajout du produit à la liste de courses");
+            throw new Error("Erreur lors de l'ajout du produit à la liste de courses");
+        } else {
+            showNotification("🛒 Produit ajouté à la liste de courses");
+        }
+        return res.json();
+    })
+    .then(data => {
+        console.log(data);
+    })
+    .catch(err => console.error(err));
+}
+
+function add_whole_recipe(ingredients) {
+    console.log(ingredients);
+
+    ingredients.forEach((ingredient, index) => {
+        setTimeout(() => {
+            if (ingredient.quantity == "") {
+                ingredient.quantity = "1";
+            }
+            add_to_course_list(ingredient.name, ingredient.quantity);
+        }, 200 * index);
+    });
+    showNotification("🛒 Recette ajoutée à la liste de courses");
 }
 
 function closePopup2() {
     const popup = document.getElementById("popup-2");
     popup.style.display = "none";
+}
+
+function should_be_displayed(button) {
+    const ingredientName = button.parentElement.children[0].textContent;
+    let ingredientQuantity = button.parentElement.children[1].textContent;
+
+    if (ingredientQuantity == "") {
+        ingredientQuantity = 0;
+    }
+
+    fetch("http://192.168.1.49:5600/inventory/have_enough_product/" + ingredientName + "/" + ingredientQuantity)
+        .then(res => res.json())
+        .then(data => {
+            const should_be_displayed = !data;
+            button.style.display = should_be_displayed ? "block" : "none";
+        })
+        .catch(err => console.error(err));
+}
+
+function showNotification(text) {
+    const notificationContainer = document.getElementById('notification-container');
+    const notificationText = document.getElementById('notification-text');
+
+    notificationText.textContent = text;
+    notificationContainer.style.display = 'flex';
+    setTimeout(() => {
+        notificationContainer.style.display = 'none';
+    }, 4000);
 }
 
 // Attendre que le DOM soit complètement chargé

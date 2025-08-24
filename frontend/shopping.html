@@ -3,13 +3,37 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no "/>
-  <link rel="stylesheet" href="/frontend/style.css" />
+  <link rel="stylesheet" href="/frontend/shopping.css" />
   <script src="/frontend/sidepanel.js"></script>
+  <script src="/frontend/shopping.js"></script>
   <title>FlowBoard - Courses</title>
 </head>
 <body>
   <!-- on utilise un id pour cibler facilement -->
   <div id="sidepanel"></div>
+
+  <div class="popup-overlay" id="popup-1" style="display: none;">
+    <div class="popup">
+      <h2>Ajouter un produit</h2><br>
+
+      <div class="popup-content">
+        <div class="input-title">Nom</div>
+        <input id="popup-name" type="text" placeholder="Nom"><br><br>
+        <div class="input-title">Quantité</div>
+        <input id="popup-quantity" type="text" placeholder="Quantité"><br><br>
+        <div id="error-message"></div>
+        <button id="close-popup-1" onclick="closePopup()" style="background-color: var(--red-pastel-color);">Retour</button>
+        <button id="close-popup-1" onclick="popupAddItem()" style="background-color: var(--green-pastel-color);">Ajouter</button>
+      </div>
+      
+    </div>
+  </div>
+
+  <div id="notification-container" style="display: none;">
+    <div id="notification">
+        <p id="notification-text"></p>
+    </div>
+  </div>
 
   <div class="main">
     <header class="main-header" id="main-header">
@@ -20,7 +44,14 @@
     </header>
 
     <main class="main-content">
-      <p>Ici se trouvera les courses.</p>
+      <div class="list-container">
+        <div class="title-sticky title-bar">
+          <p class="title-bar title-sticky">Liste de course</p>
+          <button class="title-button" onclick="openPopup()" title="Ajouter un produit">+</button>
+        </div>
+        <div class="list-item-container">
+        </div>
+      </div>
     </main>
   </div>
 
@@ -38,6 +69,22 @@
         document.getElementById('sidepanel').innerHTML =
           '<nav><a href="/frontend/dashboard.html">Dashboard</a></nav>';
       });
+
+      const dateInputs = document.querySelectorAll('.list-item-date-input');
+      const today = new Date();
+      const yyyy = today.getFullYear();
+      const mm = String(today.getMonth() + 1).padStart(2, '0'); // mois sur 2 chiffres
+      const dd = String(today.getDate()).padStart(2, '0'); // jour sur 2 chiffres
+      dateInputs.forEach(input => {
+        input.value = `${yyyy}-${mm}-${dd}`;
+      });
+
+      getShopping();
   </script>
 </body>
 </html>
+
+<!--
+✅
+❌
+-->

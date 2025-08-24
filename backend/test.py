@@ -1,26 +1,8 @@
-import fastapi
-import uvicorn
 import pydantic
-from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import StreamingResponse
-from graph import create_graph
-import io
-import json
 import os
 import tempfile
+import json
 from datetime import datetime, timedelta
-import time
-
-app = fastapi.FastAPI()
-
-# Autoriser ton frontend (ou tous)
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=["*"],  # ton site
-    allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
-)
 
 
 class Flow(pydantic.BaseModel):
@@ -145,11 +127,8 @@ def is_product_in_inventory(product_name: str):
 def get_quantity_without_unit(quantity: str | int):
     quantity_without_unit = ""
     index = 0
-    if isinstance(quantity, int):
+    if isinstance(quantity, int) or quantity == "":
         return quantity
-
-    if quantity == "":
-        return 0
     
     while quantity[index].isnumeric():
         quantity_without_unit += quantity[index]
@@ -196,7 +175,7 @@ def merge_shopping():
     for shopping_product in shopping:
         found = False
         for shopping_product_list in shopping_list:
-            if shopping_product.name.lower() == shopping_product_list.name.lower() and shopping_product.date == shopping_product_list.date:
+            if shopping_product.name == shopping_product_list.name and shopping_product.date == shopping_product_list.date:
 
                 shopping_product_list.quantity = str(get_quantity_without_unit(shopping_product_list.quantity) + get_quantity_without_unit(shopping_product.quantity)) + get_quantity_unit(shopping_product.quantity)
 
@@ -210,98 +189,6 @@ def merge_shopping():
             
     return shopping_list
 
-
-# FINANCES
-
-@app.get("/finances/get_history/{number}")
-def get_history(number: int = 10):
-    flux = load_json(FLUX_DATA_PATH, "flow")
-    return flux[::-1][:number]
-
-@app.get("/finances/get_graph")
-def get_graph():
-    flux = sort_flows(load_json(FLUX_DATA_PATH, "flow"))
-    list_inflow, list_outflow = get_inoutlist(get_last_week_flows(flux))
-    buf = create_graph(list_outflow, list_inflow)  # renvoie un BytesIO
-    return StreamingResponse(buf, media_type="image/png")
-
-@app.post("/finances/add_flow")
-def add_flow(flow: Flow):
-    flux = load_json(FLUX_DATA_PATH, "flow")
-    flux.append(flow)
-    save_json(FLUX_DATA_PATH, flux)
-    return {"status": "success", "message": "Flux ajouté avec succès"}
-
-
-# INVENTORY
-
-@app.get("/inventory/get_products")
-def get_products():
-    products = load_json(PRODUCTS_DATA_PATH, "product")
-    return products
-
-@app.post("/inventory/save_products")
-def save_product(products: list[Product]):
-    print(products)
-    save_json(PRODUCTS_DATA_PATH, products)
-    return {"status": "success", "message": "Produits sauvegardés avec succès"}    
-
-@app.get("/inventory/get_recipes")
-def get_recipes():
-    recipes = load_json(RECIPES_DATA_PATH, "recipe")
-    return recipes
-
-@app.post("/inventory/save_recipes")
-def save_recipes(recipes: list[Recipe]):
-    save_json(RECIPES_DATA_PATH, recipes)
-    return {"status": "success", "message": "Recettes sauvegardées avec succès"}
-
-# Recette
-
-@app.get("/inventory/have_enough_product/{product_name}/{quantity}")
-def get_recipes(product_name: str, quantity: str):
-    time.sleep(0.15) # pour éviter les erreurs coté frontend
-    return have_enough_product(product_name, quantity)
-
-#add_recipe_itemp_course_list
-@app.post("/inventory/add_to_course_list")
-def add_to_course_list(shopping_product: Shopping_Product):
-    shopping = load_json(COURSES_LIST_DATA_PATH, "shopping_product")
-    shopping.append(shopping_product)
-    save_json(COURSES_LIST_DATA_PATH, shopping)
-    return {"status": "success", "message": "Produit ajouté avec succès dans la liste de courses"}
-
-
-# SHOPPING
-
-@app.post("/shopping/save_shopping")
-def save_shopping(shopping: list[Shopping_Product]):
-    save_json(COURSES_LIST_DATA_PATH, shopping)
-    return {"status": "success", "message": "Courses sauvegardées avec succès"}
-
-@app.get("/shopping/get_shopping")
-def get_shopping():
-    shopping = load_json(COURSES_LIST_DATA_PATH, "shopping_product")
-    shopping = merge_shopping()
-    return shopping
-
-@app.post("/shopping/add_shopping_item_to_inventory")
-def add_shopping_item_to_inventory(shopping_product: Shopping_Product):
-    inventory = load_json(PRODUCTS_DATA_PATH, "product")
-    inventory.append(Product(name=shopping_product.name, quantity=shopping_product.actual_quantity, date=shopping_product.date))
-    save_json(PRODUCTS_DATA_PATH, inventory)
-    return {"status": "success", "message": "Courses ajoutées avec succès dans l'inventaire"}
-
-
-
-
-
-
-
-
-
-
-
-
-if __name__ == "__main__":
-    uvicorn.run(app, host="0.0.0.0", port=5600)
+print(load_json(COURSES_LIST_DATA_PATH, "shopping_product"))
+print("----------------")
+print(merge_shopping())

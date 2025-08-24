@@ -21,5 +21,16 @@
         "quantity": "1"
       }
     ]
+  },
+  {
+    "name": "Riz Cantonais",
+    "quantity": "1 personne",
+    "temps": "10min",
+    "ingredients": [
+      {
+        "name": "Riz",
+        "quantity": "75g"
+      }
+    ]
   }
 ]
