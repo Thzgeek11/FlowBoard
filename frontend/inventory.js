@@ -168,6 +168,9 @@ function save_products() {
         errorContainer.innerHTML = "Erreur lors de la sauvegarde des produits";
         errorContainer.style.color = "red";
     });
+
+    const recipe_button_plus = document.getElementsByClassName("recipe-ingredient-button");
+    Array.from(recipe_button_plus).forEach(button => should_be_displayed(button));
 }
 
 function save_recipes() {
@@ -394,12 +397,17 @@ function add_recipe(name, quantity, temps, ingredients) {
         
         const ingredientButton = document.createElement("button");
         ingredientButton.textContent = "+";
-        
+        ingredientButton.classList.add("recipe-ingredient-button");
+        ingredientButton.addEventListener("click", () => {
+            add_to_course_list(ingredient.name, ingredient.quantity);
+        });
+
         ingredientElement.appendChild(ingredientName);
         ingredientElement.appendChild(ingredientQuantity);
         ingredientElement.appendChild(ingredientButton);
         
         recipeIngredients.appendChild(ingredientElement);
+        should_be_displayed(ingredientButton);
     });
     
     recipeContainer.appendChild(recipeHeader);
@@ -408,9 +416,45 @@ function add_recipe(name, quantity, temps, ingredients) {
     rightContainer.appendChild(recipeContainer);
 }
 
+function add_to_course_list(ingredientName, ingredientQuantity) {
+    if (ingredientQuantity == "") {
+        ingredientQuantity = "1";
+    }
+    fetch("http://192.168.1.49:5600/inventory/add_to_course_list", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name: ingredientName, quantity: ingredientQuantity, actual_quantity: "", date: "", checked: false })
+    })
+    .then(res => {
+        if (!res.ok) throw new Error("Erreur lors de l'ajout du produit à la liste de courses");
+        return res.json();
+    })
+    .then(data => {
+        console.log(data);
+    })
+    .catch(err => console.error(err));
+}
+
 function closePopup2() {
     const popup = document.getElementById("popup-2");
     popup.style.display = "none";
+}
+
+function should_be_displayed(button) {
+    const ingredientName = button.parentElement.children[0].textContent;
+    let ingredientQuantity = button.parentElement.children[1].textContent;
+
+    if (ingredientQuantity == "") {
+        ingredientQuantity = 0;
+    }
+
+    fetch("http://192.168.1.49:5600/inventory/have_enough_product/" + ingredientName + "/" + ingredientQuantity)
+        .then(res => res.json())
+        .then(data => {
+            const should_be_displayed = !data;
+            button.style.display = should_be_displayed ? "block" : "none";
+        })
+        .catch(err => console.error(err));
 }
 
 // Attendre que le DOM soit complètement chargé

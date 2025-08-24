@@ -108,7 +108,6 @@ function addShoppingItemToInventory(listElement) {
     })
     .then(res => {
         if (!res.ok) throw new Error("Erreur lors de l'ajout du produit");
-        alert("Produit ajouté à l'inventaire");
         return res.json();
     })
     .catch(err => {
@@ -196,7 +195,6 @@ function popupAddItem() {
     const name = document.getElementById("popup-name").value;
     const quantity = document.getElementById("popup-quantity").value;
     addShoppingItem(name, quantity);
-    closePopup();
 }
 
 function closePopup() {

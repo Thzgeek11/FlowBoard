@@ -3,5 +3,25 @@
     "name": "Rentree",
     "quantity": "1",
     "date": "29/08/2025"
+  },
+  {
+    "name": "Spaghetti",
+    "quantity": "95g",
+    "date": "24/08/2025"
+  },
+  {
+    "name": "Lardons",
+    "quantity": "100g",
+    "date": "24/08/2025"
+  },
+  {
+    "name": "Riz",
+    "quantity": "70g",
+    "date": "24/08/2025"
+  },
+  {
+    "name": "OEUF",
+    "quantity": "12",
+    "date": "24/08/2025"
   }
 ]
