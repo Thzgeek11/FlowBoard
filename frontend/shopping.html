@@ -12,6 +12,23 @@
   <!-- on utilise un id pour cibler facilement -->
   <div id="sidepanel"></div>
 
+  <div class="popup-overlay" id="popup-1" style="display: none;">
+    <div class="popup">
+      <h2>Ajouter un produit</h2><br>
+
+      <div class="popup-content">
+        <div class="input-title">Nom</div>
+        <input id="popup-name" type="text" placeholder="Nom"><br><br>
+        <div class="input-title">Quantité</div>
+        <input id="popup-quantity" type="text" placeholder="Quantité"><br><br>
+        <div id="error-message"></div>
+        <button id="close-popup-1" onclick="closePopup()" style="background-color: var(--red-pastel-color);">Retour</button>
+        <button id="close-popup-1" onclick="popupAddItem()" style="background-color: var(--green-pastel-color);">Ajouter</button>
+      </div>
+      
+    </div>
+  </div>
+
   <div class="main">
     <header class="main-header" id="main-header">
       <h1>🛒 Courses</h1>
@@ -24,9 +41,9 @@
       <div class="list-container">
         <div class="title-sticky title-bar">
           <p class="title-bar title-sticky">Liste de course</p>
+          <button class="title-button" onclick="openPopup()" title="Ajouter un produit">+</button>
         </div>
         <div class="list-item-container">
-          <button onclick="addShoppingItem('Spaghetti', '75g')">Ajouter un aliment</button>
         </div>
       </div>
     </main>

@@ -80,8 +80,73 @@
     "date": "19/08/2025"
   },
   {
+    "category": "10",
+    "amount": 50.0,
+    "date": "18/08/2025"
+  },
+  {
+    "category": "a",
+    "amount": 1.0,
+    "date": "19/08/2025"
+  },
+  {
+    "category": "10",
+    "amount": 50.0,
+    "date": "18/08/2025"
+  },
+  {
+    "category": "a",
+    "amount": 1.0,
+    "date": "19/08/2025"
+  },
+  {
     "category": "BCPppppppppppppppppppppppppppppppppppppppppppppppp",
     "amount": 10.0,
     "date": "22/08/2025"
+  },
+  {
+    "category": "10",
+    "amount": 50.0,
+    "date": "18/08/2025"
+  },
+  {
+    "category": "a",
+    "amount": 1.0,
+    "date": "19/08/2025"
+  },
+  {
+    "category": "10",
+    "amount": 50.0,
+    "date": "18/08/2025"
+  },
+  {
+    "category": "a",
+    "amount": 1.0,
+    "date": "19/08/2025"
+  },
+  {
+    "category": "10",
+    "amount": 50.0,
+    "date": "18/08/2025"
+  },
+  {
+    "category": "a",
+    "amount": 1.0,
+    "date": "19/08/2025"
+  },
+  {
+    "category": "10",
+    "amount": 50.0,
+    "date": "18/08/2025"
+  },
+  {
+    "category": "a",
+    "amount": 1.0,
+    "date": "19/08/2025"
+  },
+  {
+    "category": "Test",
+    "amount": 100.0,
+    "date": "24/08/2025"
   }
 ]

@@ -186,3 +186,39 @@ document.addEventListener("input", event => {
         saveShopping();
     }
 });
+
+function openPopup() {
+    const popup = document.getElementById("popup-1");
+    popup.style.display = "flex";
+}
+
+function popupAddItem() {
+    const name = document.getElementById("popup-name").value;
+    const quantity = document.getElementById("popup-quantity").value;
+    addShoppingItem(name, quantity);
+    closePopup();
+}
+
+function closePopup() {
+    const popup = document.getElementById("popup-1");
+    popup.style.display = "none";
+}
+
+
+window.addEventListener("resize", () => {
+    if (window.innerWidth < 1330) {
+        document.querySelectorAll(".mobile-hidden").forEach(element => {
+            element.style.display = "none";
+        document.querySelectorAll(".list-item").forEach(element => {
+            element.style.gridTemplateColumns = "0.1fr 0.35fr 0.1fr 0.25fr 0.3fr 0.1fr";
+        });
+        });
+    } else {
+        document.querySelectorAll(".mobile-hidden").forEach(element => {
+            element.style.display = "block";
+        });
+        document.querySelectorAll(".list-item").forEach(element => {
+            element.style.gridTemplateColumns = "0.1fr 0.35fr 0.25fr 0.1fr 0.25fr 0.25fr 0.3fr 0.3fr 0.1fr";
+        });
+    }
+});

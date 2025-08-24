@@ -50,14 +50,14 @@ function get_graph() {
         .catch(err => console.error(err));
 }
 
-let historyNumber = 10;
+let historyNumber = 13;
 
 function get_history(number = historyNumber) {
     fetch("http://192.168.1.49:5600/finances/get_history/" + number)
         .then(res => res.json())
         .then(data => {
             const rightContainerTop = document.getElementById("right-container-top");
-            rightContainerTop.innerHTML = "<p id=\"right-container-title\" class=\"title-sticky\">Historique des derniers flux</p>";
+            rightContainerTop.innerHTML = "<div id=\"right-container-title\" class=\"title-sticky\" style=\"display: flex; justify-content: space-between; text-indent: 16px;\"><p>Historique des derniers flux</p><button onclick=\"openPopup()\" class=\"title-button\">+</button></div>";
             data.forEach(flow => {
                 const influx = flow.amount > 0;
                 const influxClass = influx ? "influx" : "outflux";
@@ -85,4 +85,14 @@ function increase_flux_viewed(number = 5) {
     historyNumber += number;
     get_history(historyNumber);
     console.log(historyNumber);
+}
+
+function openPopup() {
+    const popup = document.getElementById("popup-1");
+    popup.style.display = "flex";
+}
+
+function closePopup() {
+    const popup = document.getElementById("popup-1");
+    popup.style.display = "none";
 }
