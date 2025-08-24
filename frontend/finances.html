@@ -12,6 +12,24 @@
   <!-- on utilise un id pour cibler facilement -->
   <div id="sidepanel"></div>
 
+  <div class="popup-overlay" id="popup-1" style="display: none;">
+    <div class="popup">
+      <h2>Ajout de nouveaux flux</h2>
+
+      <div class="popup-content">
+        <p class="input-title">Catégorie</p>
+        <input type="text" id="category" placeholder="Catégorie"><br>
+        <p class="input-title">Montant</p>
+        <input type="number" id="amount" placeholder="Montant"><br>
+        <p class="input-title">Date</p>
+        <input type="date" id="date"><br>
+        <button id="close-popup-1" onclick="closePopup()" style="background-color: var(--red-pastel-color);">Retour</button>
+        <button id="inflow-button" onclick="add_flow()" style="background-color: var(--green-pastel-color);">Ajouter</button>
+      </div>
+    </div>
+  </div>
+
+
   <div class="main">
     <header class="main-header" id="main-header">
       <h1>💵 Finances</h1>
@@ -27,19 +45,7 @@
       </div>
       <div id="right-container">
         <div id="right-container-top">
-            <p id="right-container-title" class="title-sticky">Historique des derniers flux</p>
-            <p>En cours de chargement...</p>
-        </div>
-        <div id="right-container-bottom">
-            <p class="title-sticky">Ajout de nouveaux flux</p>
-            <div class="input-title">Catégorie</div>
-            <input type="text" id="category" placeholder="Catégorie"><br>
-            <div class="input-title">Montant</div>
-            <input type="number" id="amount" placeholder="Montant"><br>
-            <div class="input-title">Date</div>
-            <input type="date" id="date"><br>
-            <p id="error-message">Oh, you found me !</p>
-            <button id="inflow-button" onclick="add_flow()">Ajouter</button>
+            <div id="right-container-title" class="title-sticky"><p>Historique des derniers flux</p></div>
         </div>
       </div>
     </main>

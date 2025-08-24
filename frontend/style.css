@@ -33,6 +33,10 @@ body {
     color: #fff;
 }
 
+button:hover {
+    cursor: pointer;
+}
+
 /* SIDEPANEL */
 #sidepanel {
     grid-column: 1 / 2;
