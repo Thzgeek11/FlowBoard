@@ -8,14 +8,21 @@
   },
   {
     "name": "Parmesan",
-    "quantity": "2",
-    "actual_quantity": "0",
+    "quantity": "1",
+    "actual_quantity": "",
     "date": "",
     "checked": false
   },
   {
     "name": "Lardons",
     "quantity": "100g",
+    "actual_quantity": "",
+    "date": "",
+    "checked": false
+  },
+  {
+    "name": "Oeuf",
+    "quantity": "1",
     "actual_quantity": "",
     "date": "",
     "checked": false

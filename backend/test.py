@@ -176,9 +176,12 @@ def merge_shopping():
         found = False
         for shopping_product_list in shopping_list:
             if shopping_product.name == shopping_product_list.name and shopping_product.date == shopping_product_list.date:
+
                 shopping_product_list.quantity = str(get_quantity_without_unit(shopping_product_list.quantity) + get_quantity_without_unit(shopping_product.quantity)) + get_quantity_unit(shopping_product.quantity)
+
                 shopping_product_list.actual_quantity = str(get_quantity_without_unit(shopping_product_list.actual_quantity) + get_quantity_without_unit(shopping_product.actual_quantity)) + get_quantity_unit(shopping_product.actual_quantity)
                 found = True
+                
                 break
         if not found:
             shopping_product_list = Shopping_Product(name=shopping_product.name, quantity=shopping_product.quantity, actual_quantity=shopping_product.actual_quantity, date=shopping_product.date, checked=shopping_product.checked)

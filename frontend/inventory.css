@@ -403,6 +403,45 @@ input, button {
 }
 
 
+/* Notification */
+
+#notification-container {
+    position: fixed;
+    top: 10px; 
+    left: 0px;
+    z-index: 1000;
+    line-height: 40px;
+    text-align: center;
+    animation: slide-in 4s ease-in-out;
+    animation-fill-mode: forwards;
+}
+
+#notification {
+    background-color: #303030;
+    min-width: 100%;
+    color: #fff;
+    border-radius: 5px;
+    padding: 10px;
+    box-shadow: 0px 0px 10px 1px #000000;
+}
+
+@keyframes slide-in {
+    0% {
+        transform: translateX(-110%);
+    }
+    25% {
+        transform: translateX(5%);
+    }
+    75% {
+        transform: translateX(5%);
+    }
+    100% {
+        transform: translateX(-110%);
+    }
+}
+
+
+
 
 @media (max-width: 800px) {
     body {
@@ -594,5 +633,9 @@ input, button {
         background-color: var(--blue-pastel-color);
         position: relative;
         top: -8px;
+    }
+
+    #notification-container {
+        width: 86%;
     }
 }

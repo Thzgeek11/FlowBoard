@@ -6,7 +6,7 @@
   },
   {
     "name": "Spaghetti",
-    "quantity": "95g",
+    "quantity": "80g",
     "date": "24/08/2025"
   },
   {
@@ -23,5 +23,10 @@
     "name": "OEUF",
     "quantity": "12",
     "date": "24/08/2025"
+  },
+  {
+    "name": "Spaghetti",
+    "quantity": "25g",
+    "date": "28/08/2025"
   }
 ]

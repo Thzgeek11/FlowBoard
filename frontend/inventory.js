@@ -236,8 +236,6 @@ function add_recipe() {
     let date = document.getElementById("date").value; // format HTML input = YYYY-MM-DD
 
     if (!name || !quantity || !date) return;
-
-    
 }
 
 function formatDate(date) {
@@ -414,6 +412,11 @@ function add_recipe(name, quantity, temps, ingredients) {
     recipeContainer.appendChild(recipeIngredients);
     
     rightContainer.appendChild(recipeContainer);
+
+    recipeButton.addEventListener("click", () => {
+        add_whole_recipe(ingredients);
+    });
+    
 }
 
 function add_to_course_list(ingredientName, ingredientQuantity) {
@@ -426,13 +429,32 @@ function add_to_course_list(ingredientName, ingredientQuantity) {
         body: JSON.stringify({ name: ingredientName, quantity: ingredientQuantity, actual_quantity: "", date: "", checked: false })
     })
     .then(res => {
-        if (!res.ok) throw new Error("Erreur lors de l'ajout du produit à la liste de courses");
+        if (!res.ok) {
+            showNotification("⚠️ Erreur lors de l'ajout du produit à la liste de courses");
+            throw new Error("Erreur lors de l'ajout du produit à la liste de courses");
+        } else {
+            showNotification("🛒 Produit ajouté à la liste de courses");
+        }
         return res.json();
     })
     .then(data => {
         console.log(data);
     })
     .catch(err => console.error(err));
+}
+
+function add_whole_recipe(ingredients) {
+    console.log(ingredients);
+
+    ingredients.forEach((ingredient, index) => {
+        setTimeout(() => {
+            if (ingredient.quantity == "") {
+                ingredient.quantity = "1";
+            }
+            add_to_course_list(ingredient.name, ingredient.quantity);
+        }, 200 * index);
+    });
+    showNotification("🛒 Recette ajoutée à la liste de courses");
 }
 
 function closePopup2() {
@@ -455,6 +477,17 @@ function should_be_displayed(button) {
             button.style.display = should_be_displayed ? "block" : "none";
         })
         .catch(err => console.error(err));
+}
+
+function showNotification(text) {
+    const notificationContainer = document.getElementById('notification-container');
+    const notificationText = document.getElementById('notification-text');
+
+    notificationText.textContent = text;
+    notificationContainer.style.display = 'flex';
+    setTimeout(() => {
+        notificationContainer.style.display = 'none';
+    }, 4000);
 }
 
 // Attendre que le DOM soit complètement chargé

@@ -45,12 +45,12 @@ function validateShoppingItem(a, save_shopping = true) {
     const listElement = a.parentElement.parentElement;
 
     if (listElement.children[5].value == "") {
-        alert("Veuillez entrer une quantité");
+        showNotification("❌ Veuillez entrer une quantité");
         return;
     }
 
     if (listElement.children[7].value == "") {
-        alert("Veuillez entrer une date de péremption");
+        showNotification("❌ Veuillez entrer une date de péremption");
         return;
     }
 
@@ -85,6 +85,7 @@ function validateShoppingItem(a, save_shopping = true) {
         console.log("saveShopping");
         addShoppingItemToInventory(listElement);
         saveShopping();
+        showNotification("📦 Produit ajouté");
     }
 }
 
@@ -152,6 +153,9 @@ function getShopping() {
     .then(shopping => {
         console.log("Shopping :", shopping);
         shopping.forEach(item => {
+            if (item.actual_quantity == "0") {
+                item.actual_quantity = "";
+            }
             addShoppingItem(item.name, item.quantity, item.actual_quantity, item.date, item.checked, false);
         });
     })
@@ -202,14 +206,28 @@ function closePopup() {
     popup.style.display = "none";
 }
 
+function showNotification(text) {
+    const notificationContainer = document.getElementById('notification-container');
+    const notificationText = document.getElementById('notification-text');
+
+    notificationText.textContent = text;
+    notificationContainer.style.display = 'flex';
+    setTimeout(() => {
+        notificationContainer.style.display = 'none';
+    }, 4000);
+}
+
 
 window.addEventListener("resize", () => {
+    if (window.innerWidth < 800) {
+        return;
+    }
     if (window.innerWidth < 1330) {
         document.querySelectorAll(".mobile-hidden").forEach(element => {
             element.style.display = "none";
+        });
         document.querySelectorAll(".list-item").forEach(element => {
             element.style.gridTemplateColumns = "0.1fr 0.35fr 0.1fr 0.25fr 0.3fr 0.1fr";
-        });
         });
     } else {
         document.querySelectorAll(".mobile-hidden").forEach(element => {
