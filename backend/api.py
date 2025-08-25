@@ -10,8 +10,11 @@ import os
 import tempfile
 from datetime import datetime, timedelta
 import time
+import subabase_api
 
 app = fastapi.FastAPI()
+
+supabase = subabase_api.Supabase()
 
 # Autoriser ton frontend (ou tous)
 app.add_middleware(
@@ -51,49 +54,9 @@ class Shopping_Product(pydantic.BaseModel):
     date: str
     checked: bool
 
-FLUX_DATA_PATH = "backend/flux.json"
-PRODUCTS_DATA_PATH = "backend/inventory.json"
-RECIPES_DATA_PATH = "backend/recipe.json"
-COURSES_LIST_DATA_PATH = "backend/courses_list.json"
-
-def safe_write_json(path: str, data: list[dict]):
-    """Écrit un JSON de manière atomique (évite fichiers vides si crash)."""
-    tmp_fd, tmp_path = tempfile.mkstemp()
-    with os.fdopen(tmp_fd, "w", encoding="utf-8") as tmp_file:
-        json.dump(data, tmp_file, indent=2, ensure_ascii=False)
-    os.replace(tmp_path, path)
-
-def load_json(path: str, type: str) -> list[Flow] | list[Product] | list[Recipe] | list[Shopping_Product]:
-    """Charge le fichier JSON en Flow[], tolère vide/corrompu."""
-    if not os.path.exists(path):
-        safe_write_json(path, [])
-        return []
-
-    try:
-        with open(path, "r", encoding="utf-8") as f:
-            data = json.load(f)
-            if type == "flow":
-                return [Flow(**flow) for flow in data]
-            elif type == "product":
-                return [Product(**product) for product in data]
-            elif type == "recipe":
-                return [Recipe(**recipe) for recipe in data]
-            elif type == "shopping_product":
-                return [Shopping_Product(**shopping_product) for shopping_product in data]
-    except (json.JSONDecodeError, FileNotFoundError):
-        # fichier vide/corrompu → reset
-        safe_write_json(path, [])
-        return []
-
-def pydantic_to_dict(data: list[Flow] | list[Product] | list[Recipe] | list[Shopping_Product]):
-    return [flow.model_dump() for flow in data]
-
-def save_json(path: str, data_pydantic: list[Flow] | list[Product] | list[Recipe] | list[Shopping_Product]):
-    """Sauvegarde la liste de Flow en JSON dict."""
-    dicts = pydantic_to_dict(data_pydantic)
-    safe_write_json(path, dicts)
 
 def sort_flows(flux_data: list[Flow]):
+    flux_data = [Flow(**item) for item in flux_data if type(item) == dict]
     return sorted(
         flux_data,
         key=lambda x: datetime.strptime(x.date, "%d/%m/%Y"),
@@ -136,9 +99,9 @@ def get_inoutlist(flux_data: list[Flow]):
 
 
 def is_product_in_inventory(product_name: str):
-    inventory = load_json(PRODUCTS_DATA_PATH, "product")
+    inventory = supabase.get_inventory()
     for product_inventory in inventory:
-        if product_name.lower() == product_inventory.name.lower():
+        if product_name.lower() == product_inventory["name"].lower():
             return True
     return False
 
@@ -172,17 +135,17 @@ def get_quantity_unit(quantity: str | int):
     return quantity_unit
 
 def have_enough_product(product_name: str, quantity: str):
-    inventory = load_json(PRODUCTS_DATA_PATH, "product")
+    inventory = supabase.get_inventory()
 
     if not is_product_in_inventory(product_name):
         return False
 
     total_of_product = 0
     for product_inventory in inventory:
-        if product_name.lower() != product_inventory.name.lower():
+        if product_name.lower() != product_inventory["name"].lower():
             continue
             
-        total_of_product += get_quantity_without_unit(product_inventory.quantity)
+        total_of_product += get_quantity_without_unit(product_inventory["quantity"])
 
         if total_of_product >= get_quantity_without_unit(quantity):
             return True
@@ -191,7 +154,8 @@ def have_enough_product(product_name: str, quantity: str):
 
 def merge_shopping():
     """ Fusionne les produits de la liste de courses avec la même date et le même nom """
-    shopping = load_json(COURSES_LIST_DATA_PATH, "shopping_product")
+    shopping = supabase.get_courses_list()
+    shopping = [Shopping_Product(**item) for item in shopping if type(item) == dict]
     shopping_list = []
     for shopping_product in shopping:
         found = False
@@ -215,21 +179,22 @@ def merge_shopping():
 
 @app.get("/finances/get_history/{number}")
 def get_history(number: int = 10):
-    flux = load_json(FLUX_DATA_PATH, "flow")
+    flux = supabase.get_flux()
     return flux[::-1][:number]
 
 @app.get("/finances/get_graph")
 def get_graph():
-    flux = sort_flows(load_json(FLUX_DATA_PATH, "flow"))
+    flux = sort_flows(supabase.get_flux())
     list_inflow, list_outflow = get_inoutlist(get_last_week_flows(flux))
     buf = create_graph(list_outflow, list_inflow)  # renvoie un BytesIO
     return StreamingResponse(buf, media_type="image/png")
 
+
 @app.post("/finances/add_flow")
 def add_flow(flow: Flow):
-    flux = load_json(FLUX_DATA_PATH, "flow")
+    flux = supabase.get_flux()
     flux.append(flow)
-    save_json(FLUX_DATA_PATH, flux)
+    supabase.save_flux(flux)
     return {"status": "success", "message": "Flux ajouté avec succès"}
 
 
@@ -237,23 +202,22 @@ def add_flow(flow: Flow):
 
 @app.get("/inventory/get_products")
 def get_products():
-    products = load_json(PRODUCTS_DATA_PATH, "product")
+    products = supabase.get_inventory()
     return products
 
 @app.post("/inventory/save_products")
 def save_product(products: list[Product]):
-    print(products)
-    save_json(PRODUCTS_DATA_PATH, products)
+    supabase.save_inventory(products)
     return {"status": "success", "message": "Produits sauvegardés avec succès"}    
 
 @app.get("/inventory/get_recipes")
 def get_recipes():
-    recipes = load_json(RECIPES_DATA_PATH, "recipe")
+    recipes = supabase.get_recipe()
     return recipes
 
 @app.post("/inventory/save_recipes")
 def save_recipes(recipes: list[Recipe]):
-    save_json(RECIPES_DATA_PATH, recipes)
+    supabase.save_recipe(recipes)
     return {"status": "success", "message": "Recettes sauvegardées avec succès"}
 
 # Recette
@@ -266,9 +230,9 @@ def get_recipes(product_name: str, quantity: str):
 #add_recipe_itemp_course_list
 @app.post("/inventory/add_to_course_list")
 def add_to_course_list(shopping_product: Shopping_Product):
-    shopping = load_json(COURSES_LIST_DATA_PATH, "shopping_product")
+    shopping = supabase.get_courses_list()
     shopping.append(shopping_product)
-    save_json(COURSES_LIST_DATA_PATH, shopping)
+    supabase.save_courses_list(shopping)
     return {"status": "success", "message": "Produit ajouté avec succès dans la liste de courses"}
 
 
@@ -276,20 +240,20 @@ def add_to_course_list(shopping_product: Shopping_Product):
 
 @app.post("/shopping/save_shopping")
 def save_shopping(shopping: list[Shopping_Product]):
-    save_json(COURSES_LIST_DATA_PATH, shopping)
+    supabase.save_courses_list(shopping)
     return {"status": "success", "message": "Courses sauvegardées avec succès"}
 
 @app.get("/shopping/get_shopping")
 def get_shopping():
-    shopping = load_json(COURSES_LIST_DATA_PATH, "shopping_product")
+    shopping = supabase.get_courses_list()
     shopping = merge_shopping()
     return shopping
 
 @app.post("/shopping/add_shopping_item_to_inventory")
 def add_shopping_item_to_inventory(shopping_product: Shopping_Product):
-    inventory = load_json(PRODUCTS_DATA_PATH, "product")
+    inventory = supabase.get_inventory()
     inventory.append(Product(name=shopping_product.name, quantity=shopping_product.actual_quantity, date=shopping_product.date))
-    save_json(PRODUCTS_DATA_PATH, inventory)
+    supabase.save_inventory(inventory)
     return {"status": "success", "message": "Courses ajoutées avec succès dans l'inventaire"}
 
 
