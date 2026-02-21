@@ -3,7 +3,9 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no "/>
+  <link rel="stylesheet" href="/frontend/sidepanel.css" />
   <link rel="stylesheet" href="/frontend/shopping.css" />
+  <script src="/frontend/auth.js"></script>
   <script src="/frontend/sidepanel.js"></script>
   <script src="/frontend/shopping.js"></script>
   <title>FlowBoard - Courses</title>
@@ -39,7 +41,7 @@
     <header class="main-header" id="main-header">
       <h1>🛒 Courses</h1>
       <div class="main-header-right">
-        <button aria-label="logout" onclick="window.location.href = '/frontend/index.html'"><img src="icons/logout.png" alt="Logout"></button>
+        <button aria-label="logout" onclick="logout()"><img src="icons/logout.png" alt="Logout"></button>
       </div>
     </header>
 

@@ -3,7 +3,9 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no "/>
+  <link rel="stylesheet" href="/frontend/style.css" />
   <link rel="stylesheet" href="/frontend/dashboard.css" />
+  <script src="/frontend/auth.js"></script>
   <script src="/frontend/sidepanel.js"></script>
   <script src="/frontend/dashboard.js"></script>
   <title>FlowBoard - Menu Principal</title>
@@ -24,7 +26,7 @@
     <header class="main-header" id="main-header">
       <h1>🧬 Dashboard</h1>
       <div class="main-header-right">
-        <button aria-label="logout" onclick="window.location.href = '/frontend/index.html'"><img src="icons/logout.png" alt="Logout"></button>
+        <button aria-label="logout" onclick="logout()"><img src="icons/logout.png" alt="Logout"></button>
       </div>
     </header>
 

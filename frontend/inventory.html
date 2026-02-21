@@ -3,7 +3,9 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no "/>
+  <link rel="stylesheet" href="/frontend/style.css" />
   <link rel="stylesheet" href="/frontend/inventory.css" />
+  <script src="/frontend/auth.js"></script>
   <script src="/frontend/sidepanel.js"></script>
   <script src="/frontend/inventory.js"></script>
   <title>FlowBoard - Inventaire</title>
@@ -71,7 +73,7 @@
     <header class="main-header" id="main-header">
       <h1>📦 Inventaire</h1>
       <div class="main-header-right">
-        <button aria-label="logout" onclick="window.location.href = '/frontend/index.html'"><img src="icons/logout.png" alt="Logout"></button>
+        <button aria-label="logout" onclick="logout()"><img src="icons/logout.png" alt="Logout"></button>
       </div>
     </header>
 

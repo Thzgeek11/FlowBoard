@@ -1,15 +1,21 @@
-import fastapi
-import uvicorn
-import pydantic
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import StreamingResponse
+from datetime import datetime, timedelta
 from graph import create_graph
-import io
+from typing import List, Dict
+import tempfile
+import pydantic
+from pydantic import BaseModel
+import uuid
+import uvicorn
+import hashlib
+import fastapi
+import shutil
+import time
 import json
 import os
-import tempfile
-from datetime import datetime, timedelta
-import time
+import io
+
 
 app = fastapi.FastAPI()
 
@@ -33,7 +39,6 @@ class Product(pydantic.BaseModel):
     quantity: str
     date: str
 
-
 class Ingredient(pydantic.BaseModel):
     name: str
     quantity: str
@@ -51,17 +56,77 @@ class Shopping_Product(pydantic.BaseModel):
     date: str
     checked: bool
 
+
+class LoginRequest(BaseModel):
+    username: str
+    password: str
+
+class Token(BaseModel):
+    token: str
+
 FLUX_DATA_PATH = "backend/flux.json"
 PRODUCTS_DATA_PATH = "backend/inventory.json"
 RECIPES_DATA_PATH = "backend/recipe.json"
 COURSES_LIST_DATA_PATH = "backend/courses_list.json"
 
-def safe_write_json(path: str, data: list[dict]):
-    """Écrit un JSON de manière atomique (évite fichiers vides si crash)."""
-    tmp_fd, tmp_path = tempfile.mkstemp()
-    with os.fdopen(tmp_fd, "w", encoding="utf-8") as tmp_file:
+LOGINS_DATA_PATH = "backend/logins.json"
+
+# FLOWBOARD AUTHSYS
+
+def md5(string):
+    hash_md5 = hashlib.md5()
+    hash_md5.update(string.encode('utf-8'))
+    return hash_md5.hexdigest()
+
+def generate_token() -> str:
+    return str(uuid.uuid4())
+
+tokens = {}
+logins = {login["username"]: login["password"] for login in json.load(open(LOGINS_DATA_PATH, "r"))}
+print(logins)
+usernames_list = list(logins.keys())
+print(usernames_list)
+
+@app.post("/api/check_access")
+def check_access(token: Token):
+    if token.token in tokens.values():
+        return {"status": "success", "message": "Access granted"}
+    return {"status": "error", "message": "Invalid token"}
+
+@app.post("/api/login")
+def login(data: LoginRequest):
+    print(f"Login attempt for user: {data.username}")
+    print(f"Password: {data.password}")
+    
+    if data.username.lower() not in usernames_list:
+        return {"status": "error", "message": "Invalid credentials"}
+    
+    if md5(data.password) != logins[data.username.lower()]:
+        return {"status": "error", "message": "Invalid credentials"}
+    
+    token = generate_token()
+    tokens[data.username] = token
+    return {"status": "success", "message": "Login successful", "token": token}
+
+# FLOWBOARD BACKEND
+
+def safe_write_json(path: str, data: List[Dict]):
+    """
+    Écrit un JSON de manière atomique (évite fichiers vides si crash).
+    Compatible Linux et Windows même si tmp file est sur un autre device.
+    """
+    # On place le tmp file dans le même dossier que le fichier final
+    dir_ = os.path.dirname(os.path.abspath(path))
+    with tempfile.NamedTemporaryFile(mode='w', delete=False, encoding='utf-8', dir=dir_) as tmp_file:
         json.dump(data, tmp_file, indent=2, ensure_ascii=False)
-    os.replace(tmp_path, path)
+        tmp_path = tmp_file.name
+
+    # On remplace le fichier final de façon sécurisée
+    try:
+        os.replace(tmp_path, path)  # atomic si même device
+    except OSError:
+        # fallback si cross-device (Linux)
+        shutil.move(tmp_path, path)
 
 def load_json(path: str, type: str) -> list[Flow] | list[Product] | list[Recipe] | list[Shopping_Product]:
     """Charge le fichier JSON en Flow[], tolère vide/corrompu."""

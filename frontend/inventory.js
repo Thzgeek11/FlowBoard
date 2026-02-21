@@ -127,7 +127,7 @@ function refresh() {
 }
 
 function get_products() {
-    fetch("http://192.168.1.49:5600/inventory/get_products")
+    fetch("http://127.0.0.1:5600/inventory/get_products")
     .then(res => {
         if (!res.ok) throw new Error("Erreur lors de la récupération des produits");
         return res.json();
@@ -154,7 +154,7 @@ function save_products() {
         return { name, quantity, date };
     });
 
-    fetch("http://192.168.1.49:5600/inventory/save_products", {
+    fetch("http://127.0.0.1:5600/inventory/save_products", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(products)
@@ -210,7 +210,7 @@ function save_recipes() {
         }
     });
     
-    fetch("http://192.168.1.49:5600/inventory/save_recipes", {
+    fetch("http://127.0.0.1:5600/inventory/save_recipes", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(recipes)
@@ -328,7 +328,7 @@ function popup2_add_recipe() {
 }
 
 function get_recipes() {
-    fetch("http://192.168.1.49:5600/inventory/get_recipes")
+    fetch("http://127.0.0.1:5600/inventory/get_recipes")
     .then(res => {
         if (!res.ok) throw new Error("Erreur lors de la récupération des recettes");
         return res.json();
@@ -423,7 +423,7 @@ function add_to_course_list(ingredientName, ingredientQuantity) {
     if (ingredientQuantity == "") {
         ingredientQuantity = "1";
     }
-    fetch("http://192.168.1.49:5600/inventory/add_to_course_list", {
+    fetch("http://127.0.0.1:5600/inventory/add_to_course_list", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ name: ingredientName, quantity: ingredientQuantity, actual_quantity: "", date: "", checked: false })
@@ -470,7 +470,7 @@ function should_be_displayed(button) {
         ingredientQuantity = 0;
     }
 
-    fetch("http://192.168.1.49:5600/inventory/have_enough_product/" + ingredientName + "/" + ingredientQuantity)
+    fetch("http://127.0.0.1:5600/inventory/have_enough_product/" + ingredientName + "/" + ingredientQuantity)
         .then(res => res.json())
         .then(data => {
             const should_be_displayed = !data;

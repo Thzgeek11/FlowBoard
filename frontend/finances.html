@@ -3,7 +3,9 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no "/>
+  <link rel="stylesheet" href="/frontend/style.css"/>
   <link rel="stylesheet" href="/frontend/finances.css" />
+  <script src="/frontend/auth.js"></script>
   <script src="/frontend/sidepanel.js"></script>
   <script src="/frontend/finances.js"></script>
   <title>FlowBoard - Finances</title>
@@ -34,14 +36,166 @@
     <header class="main-header" id="main-header">
       <h1>💵 Finances</h1>
       <div class="main-header-right">
-        <button aria-label="logout" onclick="window.location.href = '/frontend/index.html'"><img src="icons/logout.png" alt="Logout"></button>
+        <button onclick="logout()"><img src="icons/logout.png" alt="Logout"></button>
       </div>
     </header>
 
     <main class="main-content">
-      <div id="graph-container">
-        <p id="graph-container-subtitle" class="title-sticky">Graphique des finances</p>
-        <img id="graph-img" alt="En cours de chargement..." />
+      <div id="left-container">
+        <div id="left-container-graph">
+          <p id="left-container-graph-title" class="title-sticky">Graphique des finances</p>
+          <img id="graph-img" alt="En cours de chargement..." />
+        </div>
+        <div id="left-container-data">
+          <p id="left-container-data-title" class="title-sticky">Suivie du budget</p>
+          <div id="data-container">
+            <div id="data-left">
+              
+              <div class="data-month data-month-header">
+                <p class="month-name">Mois</p>
+                <p class="month-amount">Montant</p>
+                <p class="month-percent">%</p>
+              </div>
+              
+              <!-- Données ajoutées manuellement : -->
+               <div class="data-month">
+                <p class="month-name">Janvier 25</p>
+                <p class="month-amount">160€</p>
+                <p class="month-percent">10%</p>
+               </div>
+
+               <div class="data-month">
+                <p class="month-name">Février 25</p>
+                <p class="month-amount">200€</p>
+                <p class="month-percent">+15%</p>
+               </div>
+
+               <div class="data-month">
+                <p class="month-name">Mars 25</p>
+                <p class="month-amount">250€</p>
+                <p class="month-percent">+20%</p>
+               </div>
+
+               <div class="data-month">
+                <p class="month-name">Avril 25</p>
+                <p class="month-amount">300€</p>
+                <p class="month-percent">+25%</p>
+               </div>
+
+               <div class="data-month">
+                <p class="month-name">Mai 25</p>
+                <p class="month-amount">350€</p>
+                <p class="month-percent">+30%</p>
+               </div>
+
+               <div class="data-month">
+                <p class="month-name">Juin 25</p>
+                <p class="month-amount">400€</p>
+                <p class="month-percent">+35%</p>
+               </div>
+               <div class="data-month">
+                <p class="month-name">Février 25</p>
+                <p class="month-amount">200€</p>
+                <p class="month-percent">+15%</p>
+               </div>
+
+               <div class="data-month">
+                <p class="month-name">Mars 25</p>
+                <p class="month-amount">250€</p>
+                <p class="month-percent">+20%</p>
+               </div>
+
+               <div class="data-month">
+                <p class="month-name">Avril 25</p>
+                <p class="month-amount">300€</p>
+                <p class="month-percent">+25%</p>
+               </div>
+
+               <div class="data-month">
+                <p class="month-name">Mai 25</p>
+                <p class="month-amount">350€</p>
+                <p class="month-percent">+30%</p>
+               </div>
+
+               <div class="data-month">
+                <p class="month-name">Juin 25</p>
+                <p class="month-amount">400€</p>
+                <p class="month-percent">+35%</p>
+               </div>
+               <div class="data-month">
+                <p class="month-name">Février 25</p>
+                <p class="month-amount">200€</p>
+                <p class="month-percent">+15%</p>
+               </div>
+
+               <div class="data-month">
+                <p class="month-name">Mars 25</p>
+                <p class="month-amount">250€</p>
+                <p class="month-percent">+20%</p>
+               </div>
+
+               <div class="data-month">
+                <p class="month-name">Avril 25</p>
+                <p class="month-amount">300€</p>
+                <p class="month-percent">+25%</p>
+               </div>
+
+               <div class="data-month">
+                <p class="month-name">Mai 25</p>
+                <p class="month-amount">350€</p>
+                <p class="month-percent">+30%</p>
+               </div>
+
+               <div class="data-month">
+                <p class="month-name">Juin 25</p>
+                <p class="month-amount">400€</p>
+                <p class="month-percent">+35%</p>
+               </div>
+               <div class="data-month">
+                <p class="month-name">Février 25</p>
+                <p class="month-amount">200€</p>
+                <p class="month-percent">+15%</p>
+               </div>
+
+               <div class="data-month">
+                <p class="month-name">Mars 25</p>
+                <p class="month-amount">250€</p>
+                <p class="month-percent">+20%</p>
+               </div>
+
+               <div class="data-month">
+                <p class="month-name">Avril 25</p>
+                <p class="month-amount">300€</p>
+                <p class="month-percent">+25%</p>
+               </div>
+
+               <div class="data-month">
+                <p class="month-name">Mai 25</p>
+                <p class="month-amount">350€</p>
+                <p class="month-percent">+30%</p>
+               </div>
+
+               <div class="data-month">
+                <p class="month-name">Juin 25</p>
+                <p class="month-amount">400€</p>
+                <p class="month-percent">+35%</p>
+               </div>
+
+
+
+            </div>
+            <div id="data-right">
+              <p>Mois en cours</p>
+              <p>Total</p>
+              <p>167.67€</p>
+              <p>216€</p>
+              <div class="usage-percent">
+                <p id="current-month">   CE MOIS-CI </p>
+                <p id="current-month-percent">77.6%</p>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
       <div id="right-container">
         <div id="right-container-top">

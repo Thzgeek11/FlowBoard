@@ -158,5 +158,10 @@
     "category": "Riche",
     "amount": 10.0,
     "date": "24/08/2025"
+  },
+  {
+    "category": "sfsdf",
+    "amount": 10.0,
+    "date": "21/02/2026"
   }
 ]

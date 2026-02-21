@@ -17,6 +17,14 @@ html {
     font-style: normal;
 }
 
+@font-face {
+    font-family: 'AkiraBold-Salt';
+    src: url('/frontend/fonts/Akira Bold.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+    font-feature-settings: "salt";
+}
+
 * {
     margin: 0;
     padding: 0;
@@ -57,6 +65,11 @@ button:hover {
     font-size: 0.8rem;
     line-height: 80px;
     text-align: center;
+    
+}
+
+#sidepanel .header h1 {
+    font-family: 'AkiraBold-Salt', system-ui, Arial, sans-serif;
 }
 
 #sidepanel .header img {

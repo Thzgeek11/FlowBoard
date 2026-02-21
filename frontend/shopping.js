@@ -102,7 +102,7 @@ function addShoppingItemToInventory(listElement) {
     const actual_quantity = listElement.querySelector(".list-item-quantity-input").value.trim();
     const date = formatDate(listElement.querySelector(".list-item-date-input").value);
     
-    fetch("http://192.168.1.49:5600/shopping/add_shopping_item_to_inventory", {
+    fetch("http://127.0.0.1:5600/shopping/add_shopping_item_to_inventory", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ name, quantity, actual_quantity, date, checked: true })
@@ -130,7 +130,7 @@ function saveShopping() {
         const date = formatDate(item.querySelector(".list-item-date-input").value);
         return { name, quantity, actual_quantity, date, checked: item.querySelector(".list-item-square").textContent === "✅"};
     });
-    fetch("http://192.168.1.49:5600/shopping/save_shopping", {
+    fetch("http://127.0.0.1:5600/shopping/save_shopping", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(shopping)
@@ -145,7 +145,7 @@ function saveShopping() {
 }
 
 function getShopping() {
-    fetch("http://192.168.1.49:5600/shopping/get_shopping")
+    fetch("http://127.0.0.1:5600/shopping/get_shopping")
     .then(res => {
         if (!res.ok) throw new Error("Erreur lors de la récupération des courses");
         return res.json();
