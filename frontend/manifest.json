@@ -1,7 +1,7 @@
 {
     "name": "FlowBoard", 
     "short_name": "FlowBoard",
-    "start_url": "/",
+    "start_url": "frontend/",
     "display": "standalone",
     "background_color": "#222222",
     "theme_color": "#00bcd4",

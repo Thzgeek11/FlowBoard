@@ -83,9 +83,7 @@ def generate_token() -> str:
 
 tokens = {}
 logins = {login["username"]: login["password"] for login in json.load(open(LOGINS_DATA_PATH, "r"))}
-print(logins)
 usernames_list = list(logins.keys())
-print(usernames_list)
 
 @app.post("/api/check_access")
 def check_access(token: Token):
@@ -95,8 +93,6 @@ def check_access(token: Token):
 
 @app.post("/api/login")
 def login(data: LoginRequest):
-    print(f"Login attempt for user: {data.username}")
-    print(f"Password: {data.password}")
     
     if data.username.lower() not in usernames_list:
         return {"status": "error", "message": "Invalid credentials"}
@@ -307,7 +303,6 @@ def get_products():
 
 @app.post("/inventory/save_products")
 def save_product(products: list[Product]):
-    print(products)
     save_json(PRODUCTS_DATA_PATH, products)
     return {"status": "success", "message": "Produits sauvegardés avec succès"}    
 
