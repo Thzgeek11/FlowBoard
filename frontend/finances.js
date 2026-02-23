@@ -25,13 +25,13 @@ function add_flow() {
         console.log(data);
         if (data === "inflow") {
             const errorContainer = document.getElementById("error-message");
-            errorContainer.innerHTML = "Erreur lors de l'ajout du flux";
+            errorContainer.innerText = "Erreur lors de l'ajout du flux";
             errorContainer.style.color = "red";
         }
     })
     .catch(err => {
         const errorContainer = document.getElementById("error-message");
-        errorContainer.innerHTML = "Erreur lors de l'ajout du flux";
+        errorContainer.innerText = "Erreur lors de l'ajout du flux";
         errorContainer.style.color = "red";
     });
 }

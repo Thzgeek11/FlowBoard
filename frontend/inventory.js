@@ -141,7 +141,7 @@ function get_products() {
     })
     .catch(err => {
         const errorContainer = document.getElementById("error-message");
-        errorContainer.innerHTML = "Erreur lors de la récupération des produits";
+        errorContainer.innerText = "Erreur lors de la récupération des produits";
         errorContainer.style.color = "red";
     });
 }
@@ -165,7 +165,7 @@ function save_products() {
     })
     .catch(err => {
         const errorContainer = document.getElementById("error-message");
-        errorContainer.innerHTML = "Erreur lors de la sauvegarde des produits";
+        errorContainer.innerText = "Erreur lors de la sauvegarde des produits";
         errorContainer.style.color = "red";
     });
 
@@ -340,7 +340,7 @@ function get_recipes() {
     })
     .catch(err => {
         const errorContainer = document.getElementById("error-message");
-        errorContainer.innerHTML = "Erreur lors de la récupération des recettes";
+        errorContainer.innerText= "Erreur lors de la récupération des recettes";
         errorContainer.style.color = "red";
     });
 }

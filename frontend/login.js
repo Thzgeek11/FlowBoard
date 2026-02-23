@@ -16,19 +16,19 @@ function login() {
     .then(data => {
         if (data["status"] === "success") {
             document.getElementById("error-message").style.color = "green";
-            document.getElementById("error-message").innerHTML = "Login successful";
+            document.getElementById("error-message").innerText = "Login successful";
             // Store token in localStorage or sessionStorage
             localStorage.setItem("authToken", data["token"]);
             window.location.href = "dashboard.html";
         } else {
             localStorage.removeItem("authToken");
             document.getElementById("error-message").style.color = "red";
-            document.getElementById("error-message").innerHTML = data["message"];
+            document.getElementById("error-message").innerText = data["message"];
         }
     })
     .catch(err => {
         console.error(err);
         document.getElementById("error-message").style.color = "red";
-        document.getElementById("error-message").innerHTML = "Login failed";
+        document.getElementById("error-message").innerText = "Login failed";
     });
 }

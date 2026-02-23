@@ -73,6 +73,10 @@ LOGINS_DATA_PATH = "backend/logins.json"
 
 # FLOWBOARD AUTHSYS
 
+tokens = {}
+logins = {login["username"]: login["password"] for login in json.load(open(LOGINS_DATA_PATH, "r"))}
+usernames_list = list(logins.keys())
+
 def md5(string):
     hash_md5 = hashlib.md5()
     hash_md5.update(string.encode('utf-8'))
@@ -81,13 +85,12 @@ def md5(string):
 def generate_token() -> str:
     return str(uuid.uuid4())
 
-tokens = {}
-logins = {login["username"]: login["password"] for login in json.load(open(LOGINS_DATA_PATH, "r"))}
-usernames_list = list(logins.keys())
+def verify(token):
+    return True if token in tokens.values() else False
 
 @app.post("/api/check_access")
 def check_access(token: Token):
-    if token.token in tokens.values():
+    if verify(token.token):
         return {"status": "success", "message": "Access granted"}
     return {"status": "error", "message": "Invalid token"}
 

@@ -249,7 +249,7 @@ button:hover {
     width: 80px;
 
     background-color: transparent;
-    background-image: radial-gradient(circle, green 50%, red 50%);
+    background-image: radial-gradient(circle, transparent 55%, red 45%);
     border-radius: 50%;
     position: absolute;
 
