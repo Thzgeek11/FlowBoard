@@ -12,7 +12,8 @@ function checkAccess(token) {
     fetch("http://127.0.0.1:5600/api/check_access", {
         method: "POST",
         headers: {
-            "Content-Type": "application/json"
+            "Content-Type": "application/json",
+            "X-API-Key": localStorage.getItem("authToken")
         },
         body: JSON.stringify({ token })
     })

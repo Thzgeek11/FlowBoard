@@ -8,7 +8,8 @@ function add_flow() {
     fetch("http://127.0.0.1:5600/finances/add_flow", {
         method: "POST",
         headers: {
-          "Content-Type": "application/json"
+          "Content-Type": "application/json",
+          "X-API-Key": localStorage.getItem("authToken")
         },
         body: JSON.stringify({
             category: document.getElementById("category").value,
@@ -37,7 +38,11 @@ function add_flow() {
 }
   
 function get_graph() {
-    fetch("http://127.0.0.1:5600/finances/get_graph")
+    fetch("http://127.0.0.1:5600/finances/get_graph", {
+        headers: {
+            "X-API-Key": localStorage.getItem("authToken")
+        }
+    })
         .then(res => res.blob()) // <- récupérer le contenu binaire
         .then(blob => {
             // Créer une URL utilisable dans un <img>
@@ -53,7 +58,11 @@ function get_graph() {
 let historyNumber = 13;
 
 function get_history(number = historyNumber) {
-    fetch("http://127.0.0.1:5600/finances/get_history/" + number)
+    fetch("http://127.0.0.1:5600/finances/get_history/" + number, {
+        headers: {
+            "X-API-Key": localStorage.getItem("authToken")
+        }
+    })
         .then(res => res.json())
         .then(data => {
             const rightContainerTop = document.getElementById("right-container-top");

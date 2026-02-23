@@ -1,5 +1,6 @@
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import StreamingResponse
+from fastapi import Header, HTTPException
 from datetime import datetime, timedelta
 from graph import create_graph
 from typing import List, Dict
@@ -27,7 +28,6 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
-
 
 class Flow(pydantic.BaseModel):
     category: str
@@ -71,6 +71,8 @@ COURSES_LIST_DATA_PATH = "backend/courses_list.json"
 
 LOGINS_DATA_PATH = "backend/logins.json"
 
+
+
 # FLOWBOARD AUTHSYS
 
 tokens = {}
@@ -89,10 +91,10 @@ def verify(token):
     return True if token in tokens.values() else False
 
 @app.post("/api/check_access")
-def check_access(token: Token):
-    if verify(token.token):
-        return {"status": "success", "message": "Access granted"}
-    return {"status": "error", "message": "Invalid token"}
+def check_access(x_api_key: str = Header(None)):
+    if not verify(x_api_key):
+        raise HTTPException(status_code=401, detail="Invalid token")
+    return {"status": "success", "message": "Access granted"}
 
 @app.post("/api/login")
 def login(data: LoginRequest):
@@ -106,6 +108,8 @@ def login(data: LoginRequest):
     token = generate_token()
     tokens[data.username] = token
     return {"status": "success", "message": "Login successful", "token": token}
+
+
 
 # FLOWBOARD BACKEND
 
@@ -278,19 +282,28 @@ def merge_shopping():
 # FINANCES
 
 @app.get("/finances/get_history/{number}")
-def get_history(number: int = 10):
+def get_history(number: int = 10, x_api_key: str = Header(None)):
+    if not verify(x_api_key):
+        raise HTTPException(status_code=401, detail="Invalid token")
+        
     flux = load_json(FLUX_DATA_PATH, "flow")
     return flux[::-1][:number]
 
 @app.get("/finances/get_graph")
-def get_graph():
+def get_graph(x_api_key: str = Header(None)):
+    if not verify(x_api_key):
+        raise HTTPException(status_code=401, detail="Invalid token")
+        
     flux = sort_flows(load_json(FLUX_DATA_PATH, "flow"))
     list_inflow, list_outflow = get_inoutlist(get_last_week_flows(flux))
     buf = create_graph(list_outflow, list_inflow)  # renvoie un BytesIO
     return StreamingResponse(buf, media_type="image/png")
 
 @app.post("/finances/add_flow")
-def add_flow(flow: Flow):
+def add_flow(flow: Flow, x_api_key: str = Header(None)):
+    if not verify(x_api_key):
+        raise HTTPException(status_code=401, detail="Invalid token")
+        
     flux = load_json(FLUX_DATA_PATH, "flow")
     flux.append(flow)
     save_json(FLUX_DATA_PATH, flux)
@@ -300,35 +313,53 @@ def add_flow(flow: Flow):
 # INVENTORY
 
 @app.get("/inventory/get_products")
-def get_products():
+def get_products(x_api_key: str = Header(None)):
+    if not verify(x_api_key):
+        raise HTTPException(status_code=401, detail="Invalid token")
+        
     products = load_json(PRODUCTS_DATA_PATH, "product")
     return products
 
 @app.post("/inventory/save_products")
-def save_product(products: list[Product]):
+def save_product(products: list[Product], x_api_key: str = Header(None)):
+    if not verify(x_api_key):
+        raise HTTPException(status_code=401, detail="Invalid token")
+        
     save_json(PRODUCTS_DATA_PATH, products)
     return {"status": "success", "message": "Produits sauvegardés avec succès"}    
 
 @app.get("/inventory/get_recipes")
-def get_recipes():
+def get_recipes(x_api_key: str = Header(None)):
+    if not verify(x_api_key):
+        raise HTTPException(status_code=401, detail="Invalid token")
+        
     recipes = load_json(RECIPES_DATA_PATH, "recipe")
     return recipes
 
 @app.post("/inventory/save_recipes")
-def save_recipes(recipes: list[Recipe]):
+def save_recipes(recipes: list[Recipe], x_api_key: str = Header(None)):
+    if not verify(x_api_key):
+        raise HTTPException(status_code=401, detail="Invalid token")
+        
     save_json(RECIPES_DATA_PATH, recipes)
     return {"status": "success", "message": "Recettes sauvegardées avec succès"}
 
 # Recette
 
 @app.get("/inventory/have_enough_product/{product_name}/{quantity}")
-def get_recipes(product_name: str, quantity: str):
+def get_recipes(product_name: str, quantity: str, x_api_key: str = Header(None)):
+    if not verify(x_api_key):
+        raise HTTPException(status_code=401, detail="Invalid token")
+        
     time.sleep(0.15) # pour éviter les erreurs coté frontend
     return have_enough_product(product_name, quantity)
 
 #add_recipe_itemp_course_list
 @app.post("/inventory/add_to_course_list")
-def add_to_course_list(shopping_product: Shopping_Product):
+def add_to_course_list(shopping_product: Shopping_Product, x_api_key: str = Header(None)):
+    if not verify(x_api_key):
+        raise HTTPException(status_code=401, detail="Invalid token")
+        
     shopping = load_json(COURSES_LIST_DATA_PATH, "shopping_product")
     shopping.append(shopping_product)
     save_json(COURSES_LIST_DATA_PATH, shopping)
@@ -338,18 +369,27 @@ def add_to_course_list(shopping_product: Shopping_Product):
 # SHOPPING
 
 @app.post("/shopping/save_shopping")
-def save_shopping(shopping: list[Shopping_Product]):
+def save_shopping(shopping: list[Shopping_Product], x_api_key: str = Header(None)):
+    if not verify(x_api_key):
+        raise HTTPException(status_code=401, detail="Invalid token")
+        
     save_json(COURSES_LIST_DATA_PATH, shopping)
     return {"status": "success", "message": "Courses sauvegardées avec succès"}
 
 @app.get("/shopping/get_shopping")
-def get_shopping():
+def get_shopping(x_api_key: str = Header(None)):
+    if not verify(x_api_key):
+        raise HTTPException(status_code=401, detail="Invalid token")
+        
     shopping = load_json(COURSES_LIST_DATA_PATH, "shopping_product")
     shopping = merge_shopping()
     return shopping
 
 @app.post("/shopping/add_shopping_item_to_inventory")
-def add_shopping_item_to_inventory(shopping_product: Shopping_Product):
+def add_shopping_item_to_inventory(shopping_product: Shopping_Product, x_api_key: str = Header(None)):
+    if not verify(x_api_key):
+        raise HTTPException(status_code=401, detail="Invalid token")
+        
     inventory = load_json(PRODUCTS_DATA_PATH, "product")
     inventory.append(Product(name=shopping_product.name, quantity=shopping_product.actual_quantity, date=shopping_product.date))
     save_json(PRODUCTS_DATA_PATH, inventory)

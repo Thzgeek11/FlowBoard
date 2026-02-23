@@ -107,7 +107,10 @@ function addShoppingItemToInventory(listElement) {
     
     fetch("http://127.0.0.1:5600/shopping/add_shopping_item_to_inventory", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: { 
+            "Content-Type": "application/json",
+            "X-API-Key": localStorage.getItem("authToken")
+        },
         body: JSON.stringify({ name, quantity, actual_quantity, date, checked: true })
     })
     .then(res => {
@@ -135,7 +138,10 @@ function saveShopping() {
     });
     fetch("http://127.0.0.1:5600/shopping/save_shopping", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: { 
+            "Content-Type": "application/json",
+            "X-API-Key": localStorage.getItem("authToken")
+        },
         body: JSON.stringify(shopping)
     })
     .then(res => {
@@ -148,7 +154,11 @@ function saveShopping() {
 }
 
 function getShopping() {
-    fetch("http://127.0.0.1:5600/shopping/get_shopping")
+    fetch("http://127.0.0.1:5600/shopping/get_shopping", {
+        headers: {
+            "X-API-Key": localStorage.getItem("authToken")
+        }
+    })
     .then(res => {
         if (!res.ok) throw new Error("Erreur lors de la récupération des courses");
         return res.json();
