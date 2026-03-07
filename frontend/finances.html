@@ -4,7 +4,8 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no "/>
   <link rel="stylesheet" href="/frontend/style.css"/>
-  <link rel="stylesheet" href="/frontend/finances.css" />
+  <link rel="stylesheet" href="/frontend/finances.css"/>
+  <link rel="stylesheet" href="/frontend/notification.css"/>
   <script src="/frontend/auth.js"></script>
   <script src="/frontend/sidepanel.js"></script>
   <script src="/frontend/finances.js"></script>
@@ -31,6 +32,11 @@
     </div>
   </div>
 
+  <div id="notification-container" style="display: none;">
+    <div id="notification">
+        <p id="notification-text"></p>
+    </div>
+  </div>
 
   <div class="main">
     <header class="main-header" id="main-header">
@@ -65,7 +71,7 @@
               <p id="current-month-amount">???.??€</p>
               <p id="current-month-budget">???€</p>
               <div class="usage-percent">
-                <p>   CE MOIS-CI </p>
+                <p id="current-month-title">CE MOIS-CI</p>
                 <p id="current-month-percent">??.??%</p>
               </div>
             </div>

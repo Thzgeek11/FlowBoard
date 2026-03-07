@@ -293,5 +293,30 @@
     "category": "40",
     "amount": -40.0,
     "date": "07/03/2026"
+  },
+  {
+    "category": "qsd",
+    "amount": 10.0,
+    "date": "07/03/2026"
+  },
+  {
+    "category": "qsd",
+    "amount": 10.0,
+    "date": "07/03/2026"
+  },
+  {
+    "category": "az",
+    "amount": 14.0,
+    "date": "07/03/2026"
+  },
+  {
+    "category": "az",
+    "amount": -45.0,
+    "date": "07/03/2026"
+  },
+  {
+    "category": "az",
+    "amount": -45.0,
+    "date": "07/03/2026"
   }
 ]

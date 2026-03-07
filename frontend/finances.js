@@ -21,6 +21,7 @@ function add_flow() {
     })
     .then(res => {
         console.log(res);
+        showNotification("✅ Flux ajouté avec succès");
         if (!res.ok) throw new Error("Erreur lors de l'ajout du flux");
         return res.json();
     })
@@ -30,12 +31,14 @@ function add_flow() {
             const errorContainer = document.getElementById("error-message");
             errorContainer.innerText = "Erreur lors de l'ajout du flux";
             errorContainer.style.color = "red";
+            showNotification("❌ Erreur lors de l'ajout du flux");
         }
     })
     .catch(err => {
         const errorContainer = document.getElementById("error-message");
         errorContainer.innerText = "Erreur lors de l'ajout du flux";
         errorContainer.style.color = "red";
+        showNotification("❌ Erreur lors de l'ajout du flux");
     });
 }
   
@@ -206,10 +209,25 @@ function closePopup() {
     popup.style.display = "none";
 }
 
+function showNotification(text) {
+    const notificationContainer = document.getElementById('notification-container');
+    const notificationText = document.getElementById('notification-text');
 
+    notificationText.textContent = text;
+    notificationContainer.style.display = 'flex';
+    setTimeout(() => {
+        notificationContainer.style.display = 'none';
+    }, 4000);
+}
 
-
-
+window.onload = function() {
+    const input = document.getElementById("date");
+    const today = new Date();
+    const yyyy = today.getFullYear();
+    const mm = String(today.getMonth() + 1).padStart(2, '0'); // mois sur 2 chiffres
+    const dd = String(today.getDate()).padStart(2, '0'); // jour sur 2 chiffres
+    input.value = `${yyyy}-${mm}-${dd}`;
+}
 
 // Faire par IA parce que flemme et pas super utile
 // let fakePercent = 0;      // valeur initiale

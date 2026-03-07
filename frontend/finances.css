@@ -246,6 +246,10 @@ button:hover {
     z-index: 1;
 }
 
+#current-month-title {
+    font-size: 31px;
+}
+
 #data-right > .usage-percent > #current-month-percent::after {
     content: "";
     display: block;

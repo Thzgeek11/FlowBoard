@@ -36,12 +36,6 @@ function fetchSidepanel() {
           '<nav><a href="/frontend/dashboard.html">Dashboard</a></nav>';
       });
 
-      const input = document.getElementById("date");
-      const today = new Date();
-      const yyyy = today.getFullYear();
-      const mm = String(today.getMonth() + 1).padStart(2, '0'); // mois sur 2 chiffres
-      const dd = String(today.getDate()).padStart(2, '0'); // jour sur 2 chiffres
-      input.value = `${yyyy}-${mm}-${dd}`;
 }
 
 window.addEventListener("orientationchange", () => {
