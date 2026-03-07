@@ -242,20 +242,25 @@ button:hover {
     position: relative;
 }
 
+.usage-percent {
+    z-index: 1;
+}
+
 #data-right > .usage-percent > #current-month-percent::after {
     content: "";
     display: block;
-    height: 80px;
-    width: 80px;
+    height: 98px;
+    width: 98px;
 
-    background-color: transparent;
-    background-image: radial-gradient(circle, transparent 55%, red 45%);
+    background-color: white;
+    background-image: radial-gradient(circle, transparent 55%, var(--ring-color) 45%);
     border-radius: 50%;
     position: absolute;
 
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
+    z-index: -1;
 }
 
 .data-month-header {
@@ -269,7 +274,7 @@ button:hover {
 
 .data-month {
     display: grid;
-    grid-template-columns: 45% auto 18%;
+    grid-template-columns: 51% auto 15%;
     justify-content: space-between;
     align-items: center;
     padding: 0 16px;
@@ -334,6 +339,11 @@ button:hover {
 
 .outflux {
     color: var(--red-color); 
+}
+
+.flux-item-title {
+    padding-left: 10px;
+    padding-right: 10px;
 }
 
 .flux-item-title, .flux-item-quantity, .flux-item-date {

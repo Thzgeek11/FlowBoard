@@ -284,13 +284,13 @@ def get_all_months():
     months = {
         (year := datetime.strptime(i.date, "%d/%m/%Y").year,
          month := datetime.strptime(i.date, "%d/%m/%Y").month,
-         get_monthly_data(month, year))
+         get_monthly_flux(month, year))
         for i in flux
     }
-    
+
     return sorted(list(months), reverse=True)
 
-def get_monthly_data(month, year):
+def get_monthly_flux(month, year):
     flux = load_json(FLUX_DATA_PATH, "flow")
     somme = 0
     for i in flux:
@@ -335,6 +335,19 @@ def get_months(x_api_key: str = Header(None)):
         raise HTTPException(status_code=401, detail="Invalid token")
         
     return get_all_months()
+
+@app.get("/finances/get_actual_month")
+def get_actual_month(x_api_key: str = Header(None)):
+    if not verify(x_api_key):
+        raise HTTPException(status_code=401, detail="Invalid token")
+
+    months = get_all_months()
+    
+    if len(months) == 0:
+        return None
+    if months[0][0] == datetime.now().year and months[0][1] == datetime.now().month:
+        return months[0]
+    return None
 
 # INVENTORY
 

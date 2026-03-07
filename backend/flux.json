@@ -1,167 +1,297 @@
 [
   {
-    "category": "Test",
-    "amount": 1.0,
-    "date": "17/08/2025"
+    "category": "Courses",
+    "amount": -22.4,
+    "date": "12/11/2024"
   },
   {
-    "category": "Test2",
-    "amount": -2.0,
-    "date": "16/08/2025"
+    "category": "Freelance",
+    "amount": 40.0,
+    "date": "12/11/2024"
   },
   {
-    "category": "Phone",
-    "amount": -1.0,
-    "date": "17/08/2025"
+    "category": "Restaurant",
+    "amount": -18.0,
+    "date": "14/11/2024"
   },
   {
-    "category": "Phone2",
-    "amount": 42.0,
-    "date": "13/08/2025"
+    "category": "Café",
+    "amount": -3.0,
+    "date": "14/11/2024"
   },
   {
-    "category": "Phone3",
-    "amount": -25.6,
-    "date": "13/08/2025"
+    "category": "Transport",
+    "amount": -6.0,
+    "date": "18/11/2024"
   },
   {
-    "category": "Pâtes ",
+    "category": "Courses",
+    "amount": -20.0,
+    "date": "18/11/2024"
+  },
+  {
+    "category": "Vente objet",
+    "amount": 35.0,
+    "date": "22/11/2024"
+  },
+  {
+    "category": "Courses",
+    "amount": -24.0,
+    "date": "02/12/2024"
+  },
+  {
+    "category": "Snack",
+    "amount": -5.0,
+    "date": "02/12/2024"
+  },
+  {
+    "category": "Freelance",
+    "amount": 50.0,
+    "date": "05/12/2024"
+  },
+  {
+    "category": "Restaurant",
+    "amount": -30.0,
+    "date": "10/12/2024"
+  },
+  {
+    "category": "Remboursement",
+    "amount": 30.0,
+    "date": "10/12/2024"
+  },
+  {
+    "category": "Courses",
+    "amount": -19.0,
+    "date": "14/01/2025"
+  },
+  {
+    "category": "Transport",
+    "amount": -7.0,
+    "date": "14/01/2025"
+  },
+  {
+    "category": "Freelance",
+    "amount": 45.0,
+    "date": "18/01/2025"
+  },
+  {
+    "category": "Restaurant",
+    "amount": -26.0,
+    "date": "21/01/2025"
+  },
+  {
+    "category": "Courses",
+    "amount": -23.0,
+    "date": "02/02/2025"
+  },
+  {
+    "category": "Snack",
+    "amount": -4.0,
+    "date": "02/02/2025"
+  },
+  {
+    "category": "Vente objet",
+    "amount": 32.0,
+    "date": "05/02/2025"
+  },
+  {
+    "category": "Courses",
+    "amount": -20.0,
+    "date": "09/02/2025"
+  },
+  {
+    "category": "Café",
     "amount": -2.5,
-    "date": "18/08/2025"
+    "date": "09/02/2025"
   },
   {
-    "category": "Nourrites",
-    "amount": -99.0,
-    "date": "18/08/2025"
+    "category": "Freelance",
+    "amount": 55.0,
+    "date": "12/02/2025"
   },
   {
-    "category": "Lilly",
-    "amount": 0.1,
-    "date": "18/08/2025"
+    "category": "Restaurant",
+    "amount": -28.0,
+    "date": "18/02/2025"
   },
   {
-    "category": "10",
+    "category": "Courses",
+    "amount": -21.0,
+    "date": "01/03/2025"
+  },
+  {
+    "category": "Transport",
+    "amount": -6.0,
+    "date": "01/03/2025"
+  },
+  {
+    "category": "Vente objet",
+    "amount": 30.0,
+    "date": "05/03/2025"
+  },
+  {
+    "category": "Courses",
+    "amount": -24.0,
+    "date": "11/03/2025"
+  },
+  {
+    "category": "Snack",
+    "amount": -4.5,
+    "date": "11/03/2025"
+  },
+  {
+    "category": "Freelance",
+    "amount": 48.0,
+    "date": "15/03/2025"
+  },
+  {
+    "category": "Restaurant",
+    "amount": -29.0,
+    "date": "20/03/2025"
+  },
+  {
+    "category": "Courses",
+    "amount": -22.0,
+    "date": "03/07/2025"
+  },
+  {
+    "category": "Transport",
+    "amount": -6.0,
+    "date": "03/07/2025"
+  },
+  {
+    "category": "Vente objet",
+    "amount": 34.0,
+    "date": "08/07/2025"
+  },
+  {
+    "category": "Courses",
+    "amount": -20.0,
+    "date": "15/07/2025"
+  },
+  {
+    "category": "Snack",
+    "amount": -5.0,
+    "date": "15/07/2025"
+  },
+  {
+    "category": "Freelance",
+    "amount": 52.0,
+    "date": "20/07/2025"
+  },
+  {
+    "category": "Restaurant",
+    "amount": -27.0,
+    "date": "26/07/2025"
+  },
+  {
+    "category": "Courses",
+    "amount": -23.0,
+    "date": "02/01/2026"
+  },
+  {
+    "category": "Transport",
+    "amount": -7.0,
+    "date": "02/01/2026"
+  },
+  {
+    "category": "Freelance",
     "amount": 50.0,
-    "date": "18/08/2025"
+    "date": "05/01/2026"
   },
   {
-    "category": "Nourriteeeeeeeeeeeeeeees",
-    "amount": -99.0,
-    "date": "18/08/2025"
+    "category": "Restaurant",
+    "amount": -30.0,
+    "date": "09/01/2026"
   },
   {
-    "category": "Lilly",
-    "amount": 0.1,
-    "date": "18/08/2025"
+    "category": "Remboursement",
+    "amount": 30.0,
+    "date": "09/01/2026"
   },
   {
-    "category": "10",
-    "amount": 50.0,
-    "date": "18/08/2025"
+    "category": "Courses",
+    "amount": -21.0,
+    "date": "15/02/2026"
   },
   {
-    "category": "Nourrites",
-    "amount": -99.0,
-    "date": "18/08/2025"
+    "category": "Snack",
+    "amount": -3.5,
+    "date": "15/02/2026"
   },
   {
-    "category": "Lilly",
-    "amount": 0.1,
-    "date": "18/08/2025"
+    "category": "Freelance",
+    "amount": 55.0,
+    "date": "20/02/2026"
   },
   {
-    "category": "10",
-    "amount": 50.0,
-    "date": "18/08/2025"
+    "category": "Courses",
+    "amount": -19.0,
+    "date": "02/03/2026"
   },
   {
-    "category": "a",
-    "amount": 1.0,
-    "date": "19/08/2025"
+    "category": "Café",
+    "amount": -2.0,
+    "date": "02/03/2026"
   },
   {
-    "category": "10",
-    "amount": 50.0,
-    "date": "18/08/2025"
+    "category": "Test neutre +",
+    "amount": 20.0,
+    "date": "07/03/2026"
   },
   {
-    "category": "a",
-    "amount": 1.0,
-    "date": "19/08/2025"
+    "category": "Test neutre -",
+    "amount": -20.0,
+    "date": "07/03/2026"
   },
   {
-    "category": "10",
-    "amount": 50.0,
-    "date": "18/08/2025"
+    "category": "21",
+    "amount": 21.0,
+    "date": "07/03/2026"
   },
   {
-    "category": "a",
-    "amount": 1.0,
-    "date": "19/08/2025"
+    "category": "40",
+    "amount": 40.0,
+    "date": "07/03/2026"
   },
   {
-    "category": "BCPppppppppppppppppppppppppppppppppppppppppppppppp",
-    "amount": 10.0,
-    "date": "22/08/2025"
+    "category": "40",
+    "amount": 40.0,
+    "date": "07/03/2026"
   },
   {
-    "category": "10",
-    "amount": 50.0,
-    "date": "18/08/2025"
+    "category": "40",
+    "amount": 40.0,
+    "date": "07/03/2026"
   },
   {
-    "category": "a",
-    "amount": 1.0,
-    "date": "19/08/2025"
+    "category": "40",
+    "amount": 40.0,
+    "date": "07/03/2026"
   },
   {
-    "category": "10",
-    "amount": 50.0,
-    "date": "18/08/2025"
+    "category": "40",
+    "amount": 40.0,
+    "date": "07/03/2026"
   },
   {
-    "category": "a",
-    "amount": 1.0,
-    "date": "19/08/2025"
+    "category": "40",
+    "amount": -40.0,
+    "date": "07/03/2026"
   },
   {
-    "category": "10",
-    "amount": 50.0,
-    "date": "18/08/2025"
+    "category": "40",
+    "amount": -40.0,
+    "date": "07/03/2026"
   },
   {
-    "category": "a",
-    "amount": 1.0,
-    "date": "19/08/2025"
+    "category": "40",
+    "amount": -160.0,
+    "date": "07/03/2026"
   },
   {
-    "category": "10",
-    "amount": 50.0,
-    "date": "18/08/2025"
-  },
-  {
-    "category": "a",
-    "amount": 1.0,
-    "date": "19/08/2025"
-  },
-  {
-    "category": "Test",
-    "amount": 100.0,
-    "date": "24/08/2025"
-  },
-  {
-    "category": "Don à Gabin",
-    "amount": -80.0,
-    "date": "24/08/2025"
-  },
-  {
-    "category": "Riche",
-    "amount": 10.0,
-    "date": "24/08/2025"
-  },
-  {
-    "category": "sfsdf",
-    "amount": 10.0,
-    "date": "21/02/2026"
+    "category": "40",
+    "amount": -40.0,
+    "date": "07/03/2026"
   }
 ]
