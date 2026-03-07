@@ -17,6 +17,21 @@ html {
     font-style: normal;
 }
 
+@font-face {
+    font-family: 'AkiraBold-Salt';
+    src: url('/frontend/fonts/Akira Bold.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+    font-feature-settings: "salt";
+}
+
+@font-face {
+    font-family: "Conthrax-Semibold";
+    src: url('/frontend/fonts/Conthrax-SemiBold.otf') format('opentype');
+    font-weight: normal;
+    font-style: normal;
+}
+
 * {
     margin: 0;
     padding: 0;
@@ -26,70 +41,112 @@ html {
 body {
     background-color: var(--main-content-color);
     color: #000;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    overflow: hidden;
 }
 
 button:hover {
     cursor: pointer;
 }
 
+.conthrax-semibold {
+    font-family: "Conthrax-Semibold";
+}
+
+.AkiraBold-Salt {
+    font-family: "AkiraBold-Salt";
+}
+
 #login-popup {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 50%;
-    height: 50dvh;
+    display: grid;
+    grid-template-columns: 1.3fr 1fr;
+}
+
+#login-popup-background {
+    grid-column: 1;
     background-color: var(--sidebar-color);
-    box-shadow: 0 0 30px rgba(0, 0, 0, 0.5);
-    font-size: 1.1rem;
-    text-align: center;
     color: #fff;
-    border-radius: 25px;
+    padding: 20px;
+    height: 100vh;
+
     display: flex;
-    justify-content: center;
+    flex-direction: column;
     align-items: center;
+    text-align: center;
+    padding-top: 33%;
+}
+
+#login-popup-background > h1 {
+    font-size: 2.8em;
+}
+
+#login-popup-background > h1 span {
+    text-shadow: 0 0 4px #ffffff;
+}
+
+#login-popup-background-content {
+    margin-top: 2rem;
+    max-width: 85%;
+}
+
+#login-popup-background-content > * {
+    font-family: "Conthrax-Semibold";
+}
+
+#login-popup-background-content p {
+    margin-top: 0.2rem;
+    font-size: 1.7rem;
 }
 
 #login-popup-content {
-    width: 100%;
-    height: 100%;
+    background-color: var(--main-content-color);
+    color: #000;
+    padding: 20px;
+    height: 100vh;
+}
+
+input {
+    padding: 1rem;
+    font-size: 1rem;
+    border-radius: 50px;
+    border: 0px solid #ccc;
+    background-color: #ececec;
+    font-family: "Conthrax-Semibold";
+}
+
+button {
+    padding: 1rem;
+    font-size: 1rem;
+    border-radius: 50px;
+    border: 0px solid #ccc;
+    color: white;
+    background-color: #363636;
+}
+
+#login-popup-content {
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    gap: 1.5rem;
+
     align-items: center;
-}
-
-#login-popup-content h1 {
-    margin-bottom: 20px;
-}
-
-#login-popup-content form {
-    display: flex;
-    flex-direction: column;
     justify-content: center;
-    align-items: center;
 }
 
-#login-popup-content form input {
-    margin-bottom: 10px;
-    padding: 10px;
-    border: none;
-    border-radius: 25px;
-    width: 100%;
+#login-popup-content > h1 {
+    font-size: 1.8rem;
+    position: relative;
+    margin-bottom: 1rem;
 }
 
-#login-popup-content form button {
-    padding: 10px;
-    border: none;
-    border-radius: 25px;
-    width: 100%;
-}
-
-#login-popup-content form button:hover {
-    cursor: pointer;
-    background-color: #c2c2c2;
+#login-popup-content > h1::after {
+    content: "";
+    display: block;
+    width: 60px;
+    height: 4px;
+    border-radius: 50px;
+    position: absolute;
+    top: 45px;
+    left: 50%;
+    background-color: var(--sidebar-color);
+    transform: translateX(-50%);
 }
 

@@ -3,7 +3,10 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no "/>
-  <link rel="stylesheet" href="/frontend/finances.css" />
+  <link rel="stylesheet" href="/frontend/style.css"/>
+  <link rel="stylesheet" href="/frontend/finances.css"/>
+  <link rel="stylesheet" href="/frontend/notification.css"/>
+  <script src="/frontend/auth.js"></script>
   <script src="/frontend/sidepanel.js"></script>
   <script src="/frontend/finances.js"></script>
   <title>FlowBoard - Finances</title>
@@ -29,19 +32,51 @@
     </div>
   </div>
 
+  <div id="notification-container" style="display: none;">
+    <div id="notification">
+        <p id="notification-text"></p>
+    </div>
+  </div>
 
   <div class="main">
     <header class="main-header" id="main-header">
       <h1>💵 Finances</h1>
       <div class="main-header-right">
-        <button aria-label="logout" onclick="window.location.href = '/frontend/index.html'"><img src="icons/logout.png" alt="Logout"></button>
+        <button onclick="logout()"><img src="icons/logout.png" alt="Logout"></button>
       </div>
     </header>
 
     <main class="main-content">
-      <div id="graph-container">
-        <p id="graph-container-subtitle" class="title-sticky">Graphique des finances</p>
-        <img id="graph-img" alt="En cours de chargement..." />
+      <div id="left-container">
+        <div id="left-container-graph">
+          <p id="left-container-graph-title" class="title-sticky">Graphique des finances</p>
+          <img id="graph-img" alt="En cours de chargement..." />
+        </div>
+        <div id="left-container-data">
+          <p id="left-container-data-title" class="title-sticky">Suivie du budget</p>
+          <div id="data-container">
+            <div id="data-left">
+              
+              <div class="data-month data-month-header">
+                <p class="month-name">Mois</p>
+                <p class="month-amount">Montant</p>
+                <p class="month-percent">%</p>
+              </div>
+              <!-- Les données seront ajoutées ici dynamiquement -->
+
+            </div>
+            <div id="data-right">
+              <p>Mois en cours</p>
+              <p>Total</p>
+              <p id="current-month-amount">???.??€</p>
+              <p id="current-month-budget">???€</p>
+              <div class="usage-percent">
+                <p id="current-month-title">CE MOIS-CI</p>
+                <p id="current-month-percent">??.??%</p>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
       <div id="right-container">
         <div id="right-container-top">
@@ -52,30 +87,11 @@
   </div>
 
   <script>
+    fetchSidepanel() 
     get_graph()
     get_history()
-
-    // fetch sidepanel.html et insertion dans #sidepanel
-    fetch('/frontend/sidepanel.html')
-      .then(res => {
-        if (!res.ok) throw new Error('Erreur chargement sidepanel: ' + res.status);
-        return res.text();
-      })
-      .then(html => document.getElementById('sidepanel').innerHTML = html)
-      .catch(err => {
-        console.error(err);
-        // fallback minimal si fetch échoue
-        document.getElementById('sidepanel').innerHTML =
-          '<nav><a href="/frontend/dashboard.html">Dashboard</a></nav>';
-      });
-      
-      const input = document.getElementById("date");
-      const today = new Date();
-      const yyyy = today.getFullYear();
-      const mm = String(today.getMonth() + 1).padStart(2, '0'); // mois sur 2 chiffres
-      const dd = String(today.getDate()).padStart(2, '0'); // jour sur 2 chiffres
-      input.value = `${yyyy}-${mm}-${dd}`;
-
+    get_months()
+    get_actual_month() 
   </script>
 </body>
 </html>

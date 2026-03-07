@@ -6,14 +6,17 @@ function addShoppingItem(itemName, itemQuantity, itemActualQuantity = "", itemDa
 
     listElement.innerHTML = `
         <p class="list-item-square" style="font-size: 24px;"><a href="#" onclick="validateShoppingItem(this)">⬜</a></p>
-        <p class="list-item-name">${itemName}</p>
+        <p class="list-item-name"></p>
         <p style="color: #747474;" class="mobile-hidden" id="mobile-hidden1">Minimum</p>
-        <p class="list-item-quantity">${itemQuantity}</p>
+        <p class="list-item-quantity"></p>
         <p style="color: #747474;" class="mobile-hidden" id="mobile-hidden2">Quantité</p>
         <input class="list-item-quantity-input" placeholder="75g">
         <p style="color: #747474;" class="mobile-hidden" id="mobile-hidden3">Péremption</p>
         <input class="list-item-date-input" id="date" type="date">
         <button class="list-item-delete-button" onclick="deleteShoppingItem(this)">🗑️</button>`;
+
+    listElement.querySelector('.list-item-name').textContent = itemName;
+    listElement.querySelector('.list-item-quantity').textContent = itemQuantity;
     listContainer.appendChild(listElement);
 
     if (itemActualQuantity != "") {
@@ -54,11 +57,11 @@ function validateShoppingItem(a, save_shopping = true) {
         return;
     }
 
-    if (a.innerHTML == "✅") {
+    if (a.innerText == "✅") {
         return;
     }
 
-    a.innerHTML = "✅";
+    a.innerText = "✅";
 
     listElement.children[1].style.textDecoration = "line-through";
     listElement.children[1].style.textDecorationThickness = "4px";
@@ -92,8 +95,8 @@ function validateShoppingItem(a, save_shopping = true) {
 /* Ajout visuel d'un produit dans l'inventaire */
 function addShoppingItemToInventory(listElement) {
     console.log("addShoppingItemToInventory");
-    if (listElement.children[5].value == "" || listElement.children[7].value == "" || listElement.children[0].children[0].innerHTML != "✅") {
-        console.log(listElement.children[5].value, listElement.children[7].value, listElement.children[0].children[0].innerHTML);
+    if (listElement.children[5].value == "" || listElement.children[7].value == "" || listElement.children[0].children[0].innerTextt != "✅") {
+        console.log(listElement.children[5].value, listElement.children[7].value, listElement.children[0].children[0].innerText);
         throw new Error("Le produit n'est pas valide");
     }
     
@@ -102,9 +105,12 @@ function addShoppingItemToInventory(listElement) {
     const actual_quantity = listElement.querySelector(".list-item-quantity-input").value.trim();
     const date = formatDate(listElement.querySelector(".list-item-date-input").value);
     
-    fetch("http://192.168.1.49:5600/shopping/add_shopping_item_to_inventory", {
+    fetch("http://127.0.0.1:5600/shopping/add_shopping_item_to_inventory", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: { 
+            "Content-Type": "application/json",
+            "X-API-Key": localStorage.getItem("authToken")
+        },
         body: JSON.stringify({ name, quantity, actual_quantity, date, checked: true })
     })
     .then(res => {
@@ -130,9 +136,12 @@ function saveShopping() {
         const date = formatDate(item.querySelector(".list-item-date-input").value);
         return { name, quantity, actual_quantity, date, checked: item.querySelector(".list-item-square").textContent === "✅"};
     });
-    fetch("http://192.168.1.49:5600/shopping/save_shopping", {
+    fetch("http://127.0.0.1:5600/shopping/save_shopping", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: { 
+            "Content-Type": "application/json",
+            "X-API-Key": localStorage.getItem("authToken")
+        },
         body: JSON.stringify(shopping)
     })
     .then(res => {
@@ -145,7 +154,11 @@ function saveShopping() {
 }
 
 function getShopping() {
-    fetch("http://192.168.1.49:5600/shopping/get_shopping")
+    fetch("http://127.0.0.1:5600/shopping/get_shopping", {
+        headers: {
+            "X-API-Key": localStorage.getItem("authToken")
+        }
+    })
     .then(res => {
         if (!res.ok) throw new Error("Erreur lors de la récupération des courses");
         return res.json();

@@ -22,6 +22,22 @@ function toggleMenu() {
     isOpen = !isOpen;
 }
 
+function fetchSidepanel() {
+    fetch('/frontend/sidepanel.html')
+      .then(res => {
+        if (!res.ok) throw new Error('Erreur chargement sidepanel: ' + res.status);
+        return res.text();
+      })
+      .then(html => document.getElementById('sidepanel').innerHTML = html)
+      .catch(err => {
+        console.error(err);
+        // fallback minimal si fetch échoue
+        document.getElementById('sidepanel').innerHTML =
+          '<nav><a href="/frontend/dashboard.html">Dashboard</a></nav>';
+      });
+
+}
+
 window.addEventListener("orientationchange", () => {
     if (isOpen == false) {
         toggleMenu();
