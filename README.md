@@ -1,49 +1,61 @@
 # 🌊 FlowBoard
 
-**FlowBoard** est une application web tout-en-un pour organiser et gérer une vie en autonomie.  
-Elle regroupe en un seul endroit : gestion du budget, inventaire de la maison, liste de courses, recettes, planification quotidienne, carnet d’idées… le tout accessible sur PC et mobile.
+**FlowBoard** est votre tableau de bord personnel tout-en-un, conçu pour simplifier la gestion de votre quotidien.  
+Authentifiez-vous et accédez à un espace personnel complet pour organiser votre vie : finances, inventaire, courses et bien plus encore.
 
 ---
 
-## 🚀 Fonctionnalités
+## 🔐 Authentification Sécurisée
 
-- **📅 Planification journalière**  
-  - Tâches à faire, prévisions, rappels.
-  
-- **🛒 Liste de courses intelligente**  
-  - Synchronisable avec Google Tasks.
-  - Compatible avec le partage sur mobile.
-  
-- **💰 Gestion du budget**  
-  - Suivi des dépenses/entrées d’argent.
-  - Mise à jour en temps réel sur tous les appareils.
-  
-- **📦 Inventaire de la maison**  
-  - Stock des produits, suivi des dates de péremption.
-  
-- **📖 Carnet d’idées**  
-  - Notes rapides et organisation thématique.
-  
-- **🌐 Mode hors ligne (PWA)**  
-  - Utilisable même sans connexion.
-  - Installation sur PC et smartphone via navigateur.
-  
-- **🔔 Intégrations externes**  
-  - Google Tasks (liste de courses, to-do).
-  - Webhooks Discord (alertes, rappels).
-  
+- **Système de connexion** avec identifiants personnels
+- **Session sécurisée** persistante pendant votre navigation
+- **Déconnexion automatique** disponible à tout moment
+
 ---
 
-## 🛠️ Stack technique
+## 🚀 Fonctionnalités Actuelles
 
-- **Frontend** : HTML / CSS / JavaScript (Responsive Design)
-- **Backend** : Python (API REST via Flask ou FastAPI)
-- **Hébergement** :  
-  - Frontend → [Netlify](https://www.netlify.com/)  
-  - Backend → [Render](https://render.com/) ou [Railway](https://railway.app/)
-- **Base de données** :  
-  - [Supabase](https://supabase.com/) ou [Firebase](https://firebase.google.com/) pour la synchro temps réel.
-- **PWA** : Service Worker + Manifest JSON.
+### � Tableau de Bord Principal
+- **Vue d'ensemble** de toutes vos données
+- **Navigation intuitive** entre les différentes sections
+- **Interface responsive** adaptée à tous les écrans
+
+### 💰 Gestion Financière Complète
+- **Suivi des flux** financiers (dépenses/recettes)
+- **Graphiques dynamiques** pour visualiser vos tendances
+- **Historique détaillé** de toutes les transactions
+- **Budget mensuel** avec suivi en temps réel
+- **Statistiques** et pourcentages d'évolution
+
+### 📦 Inventaire Intelligent
+- **Gestion des produits** avec quantités et dates
+- **Suivi des dates de péremption** automatique
+- **Carnet de recettes** intégré avec ingrédients
+- **Ajout rapide** via interface popup
+- **Notifications** pour les produits expirants
+
+### 🛒 Liste de Courses Dynamique
+- **Ajout facile** des articles avec quantités
+- **Interface intuitive** pour gérer vos achats
+- **Synchronisation** en temps réel
+- **Validation rapide** des articles achetés
+
+### 🎨 Interface Moderne
+- **Design épuré** avec thème sombre élégant
+- **Animations fluides** et transitions
+- **Sidepanel** pour navigation rapide
+- **Popups modales** pour les formulaires
+- **Notifications** visuelles non-intrusives
+
+---
+
+## 🛠️ Stack Technique
+
+- **Frontend** : HTML5 / CSS3 / JavaScript Vanilla
+- **Backend** : Python avec API REST
+- **Authentification** : Système de login personnalisé
+- **Design** : CSS moderne avec variables CSS
+- **Responsive** : Mobile-first approach
 
 ---
 

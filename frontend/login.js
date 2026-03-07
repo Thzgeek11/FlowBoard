@@ -1,25 +1,34 @@
-
-async function hashString(str) {
-    const encoder = new TextEncoder();
-    const data = encoder.encode(str);
-    const hashBuffer = await crypto.subtle.digest('SHA-256', data);
-    const hashArray = Array.from(new Uint8Array(hashBuffer));
-    // convertit en hexadécimal
-    const hashHex = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
-    return hashHex;
-}
-  
-async function login() {
-    // récupère les valeurs
-    const username = document.getElementById("username").value.toLowerCase();
-    const password = document.getElementById("password").value.toLowerCase();
-
-    const validUsername = "thzgeek";
-    const validPassword = "7551";//"78e837bb99a959e829285e58086564de711a8127116acbc1da78f54b49473c45";
-
-    if (username === validUsername && password === validPassword) {
-        window.location.href = "/frontend/dashboard.html";
-    } else {
-        alert("Nom d'utilisateur ou mot de passe incorrect");
-    }
+function login() {
+    const username = document.querySelector('input[name="username"]').value;
+    const password = document.querySelector('input[name="password"]').value;
+    
+    fetch(`http://127.0.0.1:5600/api/login`, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({username, password})
+    })
+    .then(res => {
+        if (!res.ok) throw new Error("Error logging in");
+        return res.json();
+    })
+    .then(data => {
+        if (data["status"] === "success") {
+            document.getElementById("error-message").style.color = "green";
+            document.getElementById("error-message").innerText = "Login successful";
+            // Store token in localStorage or sessionStorage
+            localStorage.setItem("authToken", data["token"]);
+            window.location.href = "dashboard.html";
+        } else {
+            localStorage.removeItem("authToken");
+            document.getElementById("error-message").style.color = "red";
+            document.getElementById("error-message").innerText = data["message"];
+        }
+    })
+    .catch(err => {
+        console.error(err);
+        document.getElementById("error-message").style.color = "red";
+        document.getElementById("error-message").innerText = "Login failed";
+    });
 }

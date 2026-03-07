@@ -127,7 +127,11 @@ function refresh() {
 }
 
 function get_products() {
-    fetch("http://192.168.1.49:5600/inventory/get_products")
+    fetch("http://127.0.0.1:5600/inventory/get_products", {
+        headers: {
+            "X-API-Key": localStorage.getItem("authToken")
+        }
+    })
     .then(res => {
         if (!res.ok) throw new Error("Erreur lors de la récupération des produits");
         return res.json();
@@ -141,7 +145,7 @@ function get_products() {
     })
     .catch(err => {
         const errorContainer = document.getElementById("error-message");
-        errorContainer.innerHTML = "Erreur lors de la récupération des produits";
+        errorContainer.innerText = "Erreur lors de la récupération des produits";
         errorContainer.style.color = "red";
     });
 }
@@ -154,9 +158,12 @@ function save_products() {
         return { name, quantity, date };
     });
 
-    fetch("http://192.168.1.49:5600/inventory/save_products", {
+    fetch("http://127.0.0.1:5600/inventory/save_products", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: { 
+            "Content-Type": "application/json",
+            "X-API-Key": localStorage.getItem("authToken")
+        },
         body: JSON.stringify(products)
     })
     .then(res => {
@@ -165,7 +172,7 @@ function save_products() {
     })
     .catch(err => {
         const errorContainer = document.getElementById("error-message");
-        errorContainer.innerHTML = "Erreur lors de la sauvegarde des produits";
+        errorContainer.innerText = "Erreur lors de la sauvegarde des produits";
         errorContainer.style.color = "red";
     });
 
@@ -210,9 +217,12 @@ function save_recipes() {
         }
     });
     
-    fetch("http://192.168.1.49:5600/inventory/save_recipes", {
+    fetch("http://127.0.0.1:5600/inventory/save_recipes", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: { 
+            "Content-Type": "application/json",
+            "X-API-Key": localStorage.getItem("authToken")
+        },
         body: JSON.stringify(recipes)
     })
     .then(res => {
@@ -328,7 +338,11 @@ function popup2_add_recipe() {
 }
 
 function get_recipes() {
-    fetch("http://192.168.1.49:5600/inventory/get_recipes")
+    fetch("http://127.0.0.1:5600/inventory/get_recipes", {
+        headers: {
+            "X-API-Key": localStorage.getItem("authToken")
+        }
+    })
     .then(res => {
         if (!res.ok) throw new Error("Erreur lors de la récupération des recettes");
         return res.json();
@@ -340,7 +354,7 @@ function get_recipes() {
     })
     .catch(err => {
         const errorContainer = document.getElementById("error-message");
-        errorContainer.innerHTML = "Erreur lors de la récupération des recettes";
+        errorContainer.innerText= "Erreur lors de la récupération des recettes";
         errorContainer.style.color = "red";
     });
 }
@@ -423,9 +437,12 @@ function add_to_course_list(ingredientName, ingredientQuantity) {
     if (ingredientQuantity == "") {
         ingredientQuantity = "1";
     }
-    fetch("http://192.168.1.49:5600/inventory/add_to_course_list", {
+    fetch("http://127.0.0.1:5600/inventory/add_to_course_list", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: { 
+            "Content-Type": "application/json",
+            "X-API-Key": localStorage.getItem("authToken")
+        },
         body: JSON.stringify({ name: ingredientName, quantity: ingredientQuantity, actual_quantity: "", date: "", checked: false })
     })
     .then(res => {
@@ -470,7 +487,11 @@ function should_be_displayed(button) {
         ingredientQuantity = 0;
     }
 
-    fetch("http://192.168.1.49:5600/inventory/have_enough_product/" + ingredientName + "/" + ingredientQuantity)
+    fetch("http://127.0.0.1:5600/inventory/have_enough_product/" + ingredientName + "/" + ingredientQuantity, {
+        headers: {
+            "X-API-Key": localStorage.getItem("authToken")
+        }
+    })
         .then(res => res.json())
         .then(data => {
             const should_be_displayed = !data;

@@ -3,7 +3,10 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no "/>
-  <link rel="stylesheet" href="/frontend/inventory.css" />
+  <link rel="stylesheet" href="/frontend/style.css"/>
+  <link rel="stylesheet" href="/frontend/inventory.css"/>
+  <link rel="stylesheet" href="/frontend/notification.css"/>
+  <script src="/frontend/auth.js"></script>
   <script src="/frontend/sidepanel.js"></script>
   <script src="/frontend/inventory.js"></script>
   <title>FlowBoard - Inventaire</title>
@@ -71,7 +74,7 @@
     <header class="main-header" id="main-header">
       <h1>📦 Inventaire</h1>
       <div class="main-header-right">
-        <button aria-label="logout" onclick="window.location.href = '/frontend/index.html'"><img src="icons/logout.png" alt="Logout"></button>
+        <button aria-label="logout" onclick="logout()"><img src="icons/logout.png" alt="Logout"></button>
       </div>
     </header>
 
@@ -96,26 +99,7 @@
   </div>
 
   <script>
-    // fetch sidepanel.html et insertion dans #sidepanel
-    fetch('/frontend/sidepanel.html')
-      .then(res => {
-        if (!res.ok) throw new Error('Erreur chargement sidepanel: ' + res.status);
-        return res.text();
-      })
-      .then(html => document.getElementById('sidepanel').innerHTML = html)
-      .catch(err => {
-        console.error(err);
-        // fallback minimal si fetch échoue
-        document.getElementById('sidepanel').innerHTML =
-          '<nav><a href="/frontend/dashboard.html">Dashboard</a></nav>';
-      });
-
-      const input = document.getElementById("date");
-      const today = new Date();
-      const yyyy = today.getFullYear();
-      const mm = String(today.getMonth() + 1).padStart(2, '0'); // mois sur 2 chiffres
-      const dd = String(today.getDate()).padStart(2, '0'); // jour sur 2 chiffres
-      input.value = `${yyyy}-${mm}-${dd}`;
+    fetchSidepanel() 
   </script>
 </body>
 </html>
