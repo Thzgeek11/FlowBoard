@@ -5,7 +5,7 @@ function add_flow() {
     let [year, month, day] = dateValue.split("-");
     let formattedDate = `${day}/${month}/${year}`;
 
-    fetch("http://127.0.0.1:5600/finances/add_flow", {
+    fetch("http://localhost:5600/finances/add_flow", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -38,7 +38,7 @@ function add_flow() {
 }
   
 function get_graph() {
-    fetch("http://127.0.0.1:5600/finances/get_graph", {
+    fetch("http://localhost:5600/finances/get_graph", {
         headers: {
             "X-API-Key": localStorage.getItem("authToken")
         }
@@ -58,7 +58,7 @@ function get_graph() {
 let historyNumber = 13;
 
 function get_history(number = historyNumber) {
-    fetch("http://127.0.0.1:5600/finances/get_history/" + number, {
+    fetch("http://localhost:5600/finances/get_history/" + number, {
         headers: {
             "X-API-Key": localStorage.getItem("authToken")
         }
@@ -90,10 +90,42 @@ function get_history(number = historyNumber) {
         .catch(err => console.error(err));
 }
 
+function get_months() {
+    fetch("http://localhost:5600/finances/get_months", {
+        headers: {
+            "X-API-Key": localStorage.getItem("authToken")
+        }
+    })
+        .then(res => res.json()) // <- récupérer le contenu binaire
+        .then(json => {
+            Object.entries(json).forEach((monthData) => {
+                const year = monthData[1][0];
+                const monthNb = monthData[1][1];
+                const amount = monthData[1][2];
+                add_data_month(monthNb, year, amount);
+            });
+            
+        })
+        .catch(err => console.error(err));
+}
+
+function add_data_month(monthNb, year, amount) {
+    const dataMonthContainer = document.getElementById("data-left");
+    const months = ["Janvier", "Février", "Mars", "Avril", "Mai", "Juin", "Juillet", "Août", "Septembre", "Octobre", "Novembre", "Decembre"];
+
+    const dataMonth = document.createElement("div");
+    dataMonth.className = "data-month";
+    dataMonth.innerHTML = `
+        <p class="month-name">${months[monthNb - 1]} ${year.toString().slice(-2)}</p>
+        <p class="month-amount">${amount}€</p>
+        <p class="month-percent">10%</p>
+    `;
+    dataMonthContainer.appendChild(dataMonth);
+}
+
 function increase_flux_viewed(number = 5) {
     historyNumber += number;
     get_history(historyNumber);
-    console.log(historyNumber);
 }
 
 function openPopup() {

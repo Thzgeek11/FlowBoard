@@ -2,7 +2,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import StreamingResponse
 from fastapi import Header, HTTPException
 from datetime import datetime, timedelta
-from graph import create_graph
+from graph import create_graph # TODO: rajouter un point de graph pour la version déployer
 from typing import List, Dict
 import tempfile
 import pydantic
@@ -278,6 +278,26 @@ def merge_shopping():
             
     return shopping_list
 
+def get_all_months():
+    flux = load_json(FLUX_DATA_PATH, "flow")
+
+    months = {
+        (year := datetime.strptime(i.date, "%d/%m/%Y").year,
+         month := datetime.strptime(i.date, "%d/%m/%Y").month,
+         get_monthly_data(month, year))
+        for i in flux
+    }
+    
+    return sorted(list(months), reverse=True)
+
+def get_monthly_data(month, year):
+    flux = load_json(FLUX_DATA_PATH, "flow")
+    somme = 0
+    for i in flux:
+        date = datetime.strptime(i.date, '%d/%m/%Y')
+        if date.month == month and date.year == year:
+            somme += i.amount
+    return somme
 
 # FINANCES
 
@@ -309,6 +329,12 @@ def add_flow(flow: Flow, x_api_key: str = Header(None)):
     save_json(FLUX_DATA_PATH, flux)
     return {"status": "success", "message": "Flux ajouté avec succès"}
 
+@app.get("/finances/get_months")
+def get_months(x_api_key: str = Header(None)):
+    if not verify(x_api_key):
+        raise HTTPException(status_code=401, detail="Invalid token")
+        
+    return get_all_months()
 
 # INVENTORY
 
